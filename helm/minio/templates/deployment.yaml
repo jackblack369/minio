@@ -65,7 +65,7 @@ spec:
           command:
             - "/bin/sh"
             - "-ce"
-            - "/usr/bin/docker-entrypoint.sh minio -S {{ .Values.certsPath }} server --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }} {{ $bucketRoot }} {{- template "minio.extraArgs" . }}"
+            - "/usr/bin/docker-entrypoint.sh minio server {{ $bucketRoot }} -S {{ .Values.certsPath }} --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }} {{- template "minio.extraArgs" . }}"
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - name: export
