@@ -10,7 +10,7 @@ cleanup() {
     echo "Cleaning up instances of MinIO"
     pkill minio
     pkill -9 minio
-    rm -rf /tmp/minio{1,2,3}
+    rm -rf /tmp/minio-ldap-idp{1,2,3}
 }
 
 cleanup
@@ -40,9 +40,9 @@ if [ ! -f ./mc ]; then
         && chmod +x mc
 fi
 
-minio server --address ":9001" /tmp/minio1/{1...4} >/tmp/minio1_1.log 2>&1 &
-minio server --address ":9002" /tmp/minio2/{1...4} >/tmp/minio2_1.log 2>&1 &
-minio server --address ":9003" /tmp/minio3/{1...4} >/tmp/minio3_1.log 2>&1 &
+minio server --config-dir /tmp/minio-ldap --address ":9001" /tmp/minio-ldap-idp1/{1...4} >/tmp/minio1_1.log 2>&1 &
+minio server --config-dir /tmp/minio-ldap --address ":9002" /tmp/minio-ldap-idp2/{1...4} >/tmp/minio2_1.log 2>&1 &
+minio server --config-dir /tmp/minio-ldap --address ":9003" /tmp/minio-ldap-idp3/{1...4} >/tmp/minio3_1.log 2>&1 &
 
 sleep 10
 
@@ -205,3 +205,5 @@ if [ "${enabled_minio1}" != "Enabled" ]; then
     echo "expected bucket to be mirrored with object-lock enabled, exiting..."
     exit_1;
 fi
+
+cleanup
