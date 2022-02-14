@@ -78,6 +78,10 @@ connectToMinio $scheme
 {{ if .Values.users }}
 # Create the users
 {{- range .Values.users }}
+{{- if .existingSecret }}
+createUser {{ .accessKey }} $(cat /config/secrets/{{ .accessKey }}) {{ .policy }}
+{{ else }}
 createUser {{ .accessKey }} {{ .secretKey }} {{ .policy }}
+{{- end }}
 {{- end }}
 {{- end }}

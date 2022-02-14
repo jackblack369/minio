@@ -57,6 +57,15 @@ spec:
                 name: {{ template "minio.fullname" . }}
             - secret:
                 name: {{ template "minio.secretName" . }}
+            {{- range .Values.users }}
+            {{- if .existingSecret }}
+            - secret:
+                name: {{ .existingSecret }}
+                items:
+                  - key: {{ .existingSecretKey }}
+                    path: secrets/{{ .accessKey }}
+            {{- end }}
+            {{- end }}
         {{- if .Values.tls.enabled }}
         - name: cert-secret-volume-mc
           secret:
