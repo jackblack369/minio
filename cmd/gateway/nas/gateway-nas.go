@@ -24,6 +24,11 @@ import (
 	minio "github.com/minio/minio/cmd"
 )
 
+var (
+	// NasGatewayMain provides nasGatewayMain function alias.
+	NasGatewayMain = nasGatewayMain
+)
+
 func init() {
 	const nasGatewayTemplate = `NAME:
   {{.HelpName}} - {{.Usage}}
