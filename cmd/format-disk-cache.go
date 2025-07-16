@@ -29,8 +29,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/sio"
 )
 
@@ -371,9 +371,10 @@ func migrateCacheData(ctx context.Context, c *diskCache, bucket, object, oldfile
 
 // migrate cache contents from old cacheFS format to new backend format
 // new format is flat
-//  sha(bucket,object)/  <== dir name
-//      - part.1         <== data
-//      - cache.json     <== metadata
+//
+//	sha(bucket,object)/  <== dir name
+//	    - part.1         <== data
+//	    - cache.json     <== metadata
 func migrateOldCache(ctx context.Context, c *diskCache) error {
 	oldCacheBucketsPath := path.Join(c.dir, minioMetaBucket, "buckets")
 	cacheFormatPath := pathJoin(c.dir, minioMetaBucket, formatConfigFile)

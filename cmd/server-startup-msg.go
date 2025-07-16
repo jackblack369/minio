@@ -25,9 +25,9 @@ import (
 	"strings"
 
 	humanize "github.com/dustin/go-humanize"
+	color "github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	color "github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/logger"
 	xnet "github.com/minio/pkg/net"
 )
 

@@ -27,7 +27,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/minio/minio/internal/event"
+	"github.com/jackblack369/minio/internal/event"
 	xnet "github.com/minio/pkg/net"
 	"github.com/nats-io/nats.go"
 	"github.com/nats-io/stan.go"

@@ -26,7 +26,7 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/gorilla/mux"
-	"github.com/minio/minio/internal/dsync"
+	"github.com/jackblack369/minio/internal/dsync"
 )
 
 const (

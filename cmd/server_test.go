@@ -34,8 +34,8 @@ import (
 	"time"
 
 	humanize "github.com/dustin/go-humanize"
+	xhttp "github.com/jackblack369/minio/internal/http"
 	"github.com/minio/minio-go/v7/pkg/set"
-	xhttp "github.com/minio/minio/internal/http"
 	"github.com/minio/pkg/bucket/policy"
 )
 

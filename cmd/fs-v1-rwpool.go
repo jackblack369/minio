@@ -22,8 +22,8 @@ import (
 	pathutil "path"
 	"sync"
 
-	"github.com/minio/minio/internal/lock"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/lock"
+	"github.com/jackblack369/minio/internal/logger"
 )
 
 // fsIOPool represents a protected list to keep track of all
@@ -139,10 +139,10 @@ func (fsi *fsIOPool) Open(path string) (*lock.RLockedFile, error) {
 }
 
 // Write - Attempt to lock the file if it exists,
-// - if the file exists. Then we try to get a write lock this
-//   will block if we can't get a lock perhaps another write
-//   or read is in progress. Concurrent calls are protected
-//   by the global namspace lock within the same process.
+//   - if the file exists. Then we try to get a write lock this
+//     will block if we can't get a lock perhaps another write
+//     or read is in progress. Concurrent calls are protected
+//     by the global namspace lock within the same process.
 func (fsi *fsIOPool) Write(path string) (wlk *lock.LockedFile, err error) {
 	if err = checkPathLength(path); err != nil {
 		return nil, err

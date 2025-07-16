@@ -30,8 +30,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/logger"
 )
 
 //go:generate stringer -type=storageMetric -trimprefix=storageMetric $GOFILE

@@ -18,16 +18,33 @@ package nas
 
 import (
 	"context"
+	"log/slog"
+	"os"
 
+	minio "github.com/jackblack369/minio/cmd"
 	"github.com/minio/cli"
 	"github.com/minio/madmin-go"
-	minio "github.com/minio/minio/cmd"
+	"github.com/natefinch/lumberjack"
+	"github.com/robfig/cron/v3"
+	"gopkg.in/yaml.v2"
 )
 
 var (
 	// NasGatewayMain provides nasGatewayMain function alias.
 	NasGatewayMain = nasGatewayMain
 )
+
+type LogConfig struct {
+	FilePath   string `yaml:"file_path"`
+	RetainDays int    `yaml:"retain_days"`
+	MaxSizeMB  int    `yaml:"max_size_mb"`
+	MaxBackups int    `yaml:"max_backups"`
+	Compress   bool   `yaml:"compress"`
+}
+
+type NASConfig struct {
+	Log LogConfig `yaml:"log"`
+}
 
 func init() {
 	const nasGatewayTemplate = `NAME:
@@ -69,8 +86,55 @@ EXAMPLES:
 	})
 }
 
+func LoadNASConfig(path string) (*NASConfig, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	config := &NASConfig{}
+	decoder := yaml.NewDecoder(file)
+	if err := decoder.Decode(config); err != nil {
+		return nil, err
+	}
+	return config, nil
+}
+func scheduleDailyRotate(l *lumberjack.Logger) {
+	c := cron.New()
+	c.AddFunc("0 0 * * *", func() {
+		_ = l.Rotate()
+	})
+	c.Start()
+}
+
+func InitLogger(cfg *LogConfig) *slog.Logger {
+	lj := &lumberjack.Logger{
+		Filename:   cfg.FilePath,
+		MaxSize:    cfg.MaxSizeMB, // MB
+		MaxBackups: cfg.MaxBackups,
+		MaxAge:     cfg.RetainDays, // days
+		Compress:   cfg.Compress,
+		LocalTime:  true,
+	}
+
+	scheduleDailyRotate(lj)
+
+	handler := slog.NewJSONHandler(lj, nil)
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
+	return logger
+}
+
 // Handler for 'minio gateway nas' command line.
 func nasGatewayMain(ctx *cli.Context) {
+	//config, err := LoadNASConfig("gateway.yml")
+	//if err != nil {
+	//	panic(err)
+	//}
+	// logger := InitLogger(&config.Log)
+
+	// schedule Daily Rotate log file
+
 	// Validate gateway arguments.
 	if !ctx.Args().Present() || ctx.Args().First() == "help" {
 		cli.ShowCommandHelpAndExit(ctx, minio.NASBackendGateway, 1)

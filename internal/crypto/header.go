@@ -23,7 +23,7 @@ import (
 	"encoding/base64"
 	"net/http"
 
-	xhttp "github.com/minio/minio/internal/http"
+	xhttp "github.com/jackblack369/minio/internal/http"
 )
 
 // RemoveSensitiveHeaders removes confidential encryption

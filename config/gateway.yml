@@ -1,0 +1,6 @@
+log:
+  file_path: "./gateway.log"
+  retain_days: 10
+  max_size_mb: 1024
+  max_backups: 30
+  compress: true

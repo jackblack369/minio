@@ -327,7 +327,7 @@ func (s *TestSuiteIAM) TestSTSForRoot(c *check) {
 }
 
 // SetUpLDAP - expects to setup an LDAP test server using the test LDAP
-// container and canned data from https://github.com/minio/minio-ldap-testing
+// container and canned data from https://github.com/jackblack369/minio-ldap-testing
 func (s *TestSuiteIAM) SetUpLDAP(c *check, serverAddr string) {
 	ctx, cancel := context.WithTimeout(context.Background(), testDefaultTimeout)
 	defer cancel()
@@ -1007,7 +1007,7 @@ const (
 )
 
 // SetUpOpenIDs - sets up one or more OpenID test servers using the test OpenID
-// container and canned data from https://github.com/minio/minio-ldap-testing
+// container and canned data from https://github.com/jackblack369/minio-ldap-testing
 //
 // Each set of client app params corresponds to a separate openid server, and
 // the i-th server in this will be applied the i-th policy in `rolePolicies`. If
@@ -1043,7 +1043,7 @@ func (s *TestSuiteIAM) SetUpOpenIDs(c *check, testApps []OpenIDClientAppParams, 
 }
 
 // SetUpOpenID - expects to setup an OpenID test server using the test OpenID
-// container and canned data from https://github.com/minio/minio-ldap-testing
+// container and canned data from https://github.com/jackblack369/minio-ldap-testing
 func (s *TestSuiteIAM) SetUpOpenID(c *check, serverAddr string, rolePolicy string) {
 	ctx, cancel := context.WithTimeout(context.Background(), testDefaultTimeout)
 	defer cancel()

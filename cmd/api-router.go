@@ -23,10 +23,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/klauspost/compress/gzhttp"
 	"github.com/minio/console/restapi"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/wildcard"
 	"github.com/rs/cors"
 )
@@ -488,6 +488,15 @@ func registerAPIRouter(router *mux.Router) {
 	// If none of the routes match add default error handler routes
 	apiRouter.NotFoundHandler = collectAPIStats("notfound", httpTraceAll(errorResponseHandler))
 	apiRouter.MethodNotAllowedHandler = collectAPIStats("methodnotallowed", httpTraceAll(methodNotAllowedHandler("S3")))
+
+	// Add log handler to the API router.
+	apiRouter.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Log the request.
+			logger.LogIf(r.Context(), logRequest(r, w, "S3"))
+			next.ServeHTTP(w, r)
+		})
+	})
 }
 
 // corsHandler handler for CORS (Cross Origin Resource Sharing)

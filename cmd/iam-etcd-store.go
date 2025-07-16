@@ -26,12 +26,12 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/kms"
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/minio/minio-go/v7/pkg/set"
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/kms"
-	"github.com/minio/minio/internal/logger"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 	etcd "go.etcd.io/etcd/client/v3"
 )
@@ -49,10 +49,11 @@ func etcdKvsToSet(prefix string, kvs []*mvccpb.KeyValue) set.StringSet {
 
 // Extract path string by stripping off the `prefix` value and the suffix,
 // value, usually in the following form.
-//  s := "config/iam/users/foo/config.json"
-//  prefix := "config/iam/users/"
-//  suffix := "config.json"
-//  result is foo
+//
+//	s := "config/iam/users/foo/config.json"
+//	prefix := "config/iam/users/"
+//	suffix := "config.json"
+//	result is foo
 func extractPathPrefixAndSuffix(s string, prefix string, suffix string) string {
 	return pathClean(strings.TrimSuffix(strings.TrimPrefix(s, prefix), suffix))
 }

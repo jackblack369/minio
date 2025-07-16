@@ -34,7 +34,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/minio/minio/internal/event"
+	"github.com/jackblack369/minio/internal/event"
 	"github.com/minio/pkg/certs"
 	xnet "github.com/minio/pkg/net"
 )

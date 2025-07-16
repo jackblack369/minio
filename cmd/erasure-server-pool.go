@@ -31,13 +31,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/config/storageclass"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/sync/errgroup"
 	"github.com/minio/madmin-go"
 	"github.com/minio/minio-go/v7/pkg/set"
 	"github.com/minio/minio-go/v7/pkg/tags"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	"github.com/minio/minio/internal/config/storageclass"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/sync/errgroup"
 	"github.com/minio/pkg/wildcard"
 )
 

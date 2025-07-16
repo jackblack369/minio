@@ -29,9 +29,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/minio/minio/internal/crypto"
-	xioutil "github.com/minio/minio/internal/ioutil"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/crypto"
+	xioutil "github.com/jackblack369/minio/internal/ioutil"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/pkg/bucket/policy"
 	xnet "github.com/minio/pkg/net"
 	"github.com/minio/zipindex"
@@ -50,7 +50,8 @@ const (
 )
 
 // splitZipExtensionPath splits the S3 path to the zip file and the path inside the zip:
-//  e.g  /path/to/archive.zip/backup-2021/myimage.png => /path/to/archive.zip, backup/myimage.png
+//
+//	e.g  /path/to/archive.zip/backup-2021/myimage.png => /path/to/archive.zip, backup/myimage.png
 func splitZipExtensionPath(input string) (zipPath, object string, err error) {
 	idx := strings.Index(input, archivePattern)
 	if idx < 0 {

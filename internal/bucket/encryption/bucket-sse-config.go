@@ -23,8 +23,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/minio/minio/internal/crypto"
-	xhttp "github.com/minio/minio/internal/http"
+	"github.com/jackblack369/minio/internal/crypto"
+	xhttp "github.com/jackblack369/minio/internal/http"
 )
 
 const (

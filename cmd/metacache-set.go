@@ -31,12 +31,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/bucket/object/lock"
+	"github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/hash"
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	"github.com/minio/minio/internal/bucket/object/lock"
-	"github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/hash"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/console"
 )
 

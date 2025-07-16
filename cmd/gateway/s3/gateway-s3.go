@@ -27,6 +27,10 @@ import (
 	"strings"
 	"time"
 
+	minio "github.com/jackblack369/minio/cmd"
+	"github.com/jackblack369/minio/internal/config"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/cli"
 	"github.com/minio/madmin-go"
 	miniogo "github.com/minio/minio-go/v7"
@@ -34,10 +38,6 @@ import (
 	"github.com/minio/minio-go/v7/pkg/encrypt"
 	"github.com/minio/minio-go/v7/pkg/s3utils"
 	"github.com/minio/minio-go/v7/pkg/tags"
-	minio "github.com/minio/minio/cmd"
-	"github.com/minio/minio/internal/config"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/bucket/policy"
 	"github.com/minio/pkg/env"
 )
@@ -140,21 +140,21 @@ func randString(n int, src rand.Source, prefix string) string {
 }
 
 // Chains all credential types, in the following order:
-//  - AWS env vars (i.e. AWS_ACCESS_KEY_ID)
-//  - AWS creds file (i.e. AWS_SHARED_CREDENTIALS_FILE or ~/.aws/credentials)
-//  - Static credentials provided by user (i.e. MINIO_ROOT_USER/MINIO_ACCESS_KEY)
+//   - AWS env vars (i.e. AWS_ACCESS_KEY_ID)
+//   - AWS creds file (i.e. AWS_SHARED_CREDENTIALS_FILE or ~/.aws/credentials)
+//   - Static credentials provided by user (i.e. MINIO_ROOT_USER/MINIO_ACCESS_KEY)
 var defaultProviders = []credentials.Provider{
 	&credentials.EnvAWS{},
 	&credentials.FileAWSCredentials{},
 }
 
 // Chains all credential types, in the following order:
-//  - AWS env vars (i.e. AWS_ACCESS_KEY_ID)
-//  - AWS creds file (i.e. AWS_SHARED_CREDENTIALS_FILE or ~/.aws/credentials)
-//  - IAM profile based credentials. (performs an HTTP
-//    call to a pre-defined endpoint, only valid inside
-//    configured ec2 instances)
-//  - Static credentials provided by user (i.e. MINIO_ROOT_USER/MINIO_ACCESS_KEY)
+//   - AWS env vars (i.e. AWS_ACCESS_KEY_ID)
+//   - AWS creds file (i.e. AWS_SHARED_CREDENTIALS_FILE or ~/.aws/credentials)
+//   - IAM profile based credentials. (performs an HTTP
+//     call to a pre-defined endpoint, only valid inside
+//     configured ec2 instances)
+//   - Static credentials provided by user (i.e. MINIO_ROOT_USER/MINIO_ACCESS_KEY)
 var defaultAWSCredProviders = []credentials.Provider{
 	&credentials.EnvAWS{},
 	&credentials.FileAWSCredentials{},

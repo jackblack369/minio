@@ -27,15 +27,15 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/config/cache"
+	"github.com/jackblack369/minio/internal/config/etcd"
+	xldap "github.com/jackblack369/minio/internal/config/identity/ldap"
+	"github.com/jackblack369/minio/internal/config/identity/openid"
+	"github.com/jackblack369/minio/internal/config/policy/opa"
+	"github.com/jackblack369/minio/internal/config/storageclass"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/config/cache"
-	"github.com/minio/minio/internal/config/etcd"
-	xldap "github.com/minio/minio/internal/config/identity/ldap"
-	"github.com/minio/minio/internal/config/identity/openid"
-	"github.com/minio/minio/internal/config/policy/opa"
-	"github.com/minio/minio/internal/config/storageclass"
-	"github.com/minio/minio/internal/logger"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
 

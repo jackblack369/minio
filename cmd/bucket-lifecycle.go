@@ -30,13 +30,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	sse "github.com/jackblack369/minio/internal/bucket/encryption"
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/event"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/s3select"
 	"github.com/minio/minio-go/v7/pkg/tags"
-	sse "github.com/minio/minio/internal/bucket/encryption"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	"github.com/minio/minio/internal/event"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/s3select"
 )
 
 const (

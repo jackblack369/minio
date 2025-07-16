@@ -21,14 +21,15 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/minio/minio/internal/logger/target/http"
-	"github.com/minio/minio/internal/logger/target/kafka"
-	"github.com/minio/minio/internal/logger/target/types"
+	"github.com/jackblack369/minio/internal/logger/target/http"
+	"github.com/jackblack369/minio/internal/logger/target/kafka"
+	"github.com/jackblack369/minio/internal/logger/target/types"
 )
 
 // Target is the entity that we will receive
 // a single log entry and Send it to the log target
-//   e.g. Send the log to a http server
+//
+//	e.g. Send the log to a http server
 type Target interface {
 	String() string
 	Endpoint() string

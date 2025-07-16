@@ -30,11 +30,11 @@ import (
 	"time"
 
 	"github.com/cespare/xxhash/v2"
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/hash"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/klauspost/compress/zstd"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	"github.com/minio/minio/internal/hash"
-	"github.com/minio/minio/internal/logger"
 	"github.com/tinylib/msgp/msgp"
 )
 

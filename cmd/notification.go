@@ -33,15 +33,15 @@ import (
 
 	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/cespare/xxhash/v2"
+	bucketBandwidth "github.com/jackblack369/minio/internal/bucket/bandwidth"
+	"github.com/jackblack369/minio/internal/crypto"
+	"github.com/jackblack369/minio/internal/event"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/sync/errgroup"
 	"github.com/klauspost/compress/zip"
 	"github.com/minio/madmin-go"
 	"github.com/minio/minio-go/v7/pkg/set"
-	bucketBandwidth "github.com/minio/minio/internal/bucket/bandwidth"
-	"github.com/minio/minio/internal/crypto"
-	"github.com/minio/minio/internal/event"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/sync/errgroup"
 	"github.com/minio/pkg/bucket/policy"
 	xnet "github.com/minio/pkg/net"
 )
@@ -1526,9 +1526,9 @@ func (sys *NotificationSys) GetClusterMetrics(ctx context.Context) chan Metric {
 // 'freeze' is 'false' would resume all S3 API calls again.
 // NOTE: once a tenant is frozen either two things needs to
 // happen before resuming normal operations.
-// - Server needs to be restarted 'mc admin service restart'
-// - 'freeze' should be set to 'false' for this call
-//   to resume normal operations.
+//   - Server needs to be restarted 'mc admin service restart'
+//   - 'freeze' should be set to 'false' for this call
+//     to resume normal operations.
 func (sys *NotificationSys) ServiceFreeze(ctx context.Context, freeze bool) []NotificationPeerErr {
 	serviceSig := serviceUnFreeze
 	if freeze {

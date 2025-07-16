@@ -29,9 +29,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/logger/message/log"
-	"github.com/minio/minio/internal/logger/target/types"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/logger/message/log"
+	"github.com/jackblack369/minio/internal/logger/target/types"
 )
 
 type testLoggerI interface {

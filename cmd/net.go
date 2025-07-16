@@ -26,9 +26,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/minio-go/v7/pkg/set"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/logger"
 	xnet "github.com/minio/pkg/net"
 )
 
@@ -322,7 +322,8 @@ func isLocalHost(host string, port string, localPort string) (bool, error) {
 
 // sameLocalAddrs - returns true if two addresses, even with different
 // formats, point to the same machine, e.g:
-//  ':9000' and 'http://localhost:9000/' will return true
+//
+//	':9000' and 'http://localhost:9000/' will return true
 func sameLocalAddrs(addr1, addr2 string) (bool, error) {
 	// Extract host & port from given parameters
 	host1, port1, err := extractHostPort(addr1)

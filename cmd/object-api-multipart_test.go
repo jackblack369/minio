@@ -26,7 +26,7 @@ import (
 	"testing"
 
 	humanize "github.com/dustin/go-humanize"
-	"github.com/minio/minio/internal/hash"
+	"github.com/jackblack369/minio/internal/hash"
 )
 
 // Wrapper for calling NewMultipartUpload tests for both Erasure multiple disks and single node setup.

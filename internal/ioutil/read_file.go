@@ -22,7 +22,7 @@ import (
 	"io/fs"
 	"os"
 
-	"github.com/minio/minio/internal/disk"
+	"github.com/jackblack369/minio/internal/disk"
 )
 
 // ReadFileWithFileInfo reads the named file and returns the contents.

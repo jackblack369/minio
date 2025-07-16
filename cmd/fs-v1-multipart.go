@@ -30,9 +30,9 @@ import (
 	"strings"
 	"time"
 
+	xioutil "github.com/jackblack369/minio/internal/ioutil"
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
-	xioutil "github.com/minio/minio/internal/ioutil"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/trie"
 )
 

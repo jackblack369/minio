@@ -1,6 +1,6 @@
-module github.com/minio/minio
+module github.com/jackblack369/minio
 
-go 1.17
+go 1.22.0
 
 require (
 	cloud.google.com/go/storage v1.10.0
@@ -58,6 +58,7 @@ require (
 	github.com/minio/zipindex v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/montanaflynn/stats v0.6.6
+	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/nats-io/nats-server/v2 v2.7.4
 	github.com/nats-io/nats.go v1.13.1-0.20220308171302-2f2f6968e98d
 	github.com/nats-io/stan.go v0.10.2
@@ -69,6 +70,7 @@ require (
 	github.com/prometheus/client_golang v1.12.1
 	github.com/prometheus/client_model v0.2.0
 	github.com/prometheus/procfs v0.7.3
+	github.com/robfig/cron/v3 v3.0.0
 	github.com/rs/cors v1.7.0
 	github.com/rs/dnscache v0.0.0-20211102005908-e0241e321417
 	github.com/secure-io/sio-go v0.3.1
@@ -218,6 +220,7 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/h2non/filetype.v1 v1.0.5 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/square/go-jose.v2 v2.5.1 // indirect
 	maze.io/x/duration v0.0.0-20160924141736-faac084b6075 // indirect
 )

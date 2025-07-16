@@ -28,8 +28,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/minio/minio/internal/crypto"
-	"github.com/minio/minio/internal/etag"
+	"github.com/jackblack369/minio/internal/crypto"
+	"github.com/jackblack369/minio/internal/etag"
 )
 
 // CacheStatusType - whether the request was served from cache.

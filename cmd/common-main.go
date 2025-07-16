@@ -46,6 +46,12 @@ import (
 	fcolor "github.com/fatih/color"
 	"github.com/go-openapi/loads"
 	"github.com/inconshreveable/mousetrap"
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/handlers"
+	"github.com/jackblack369/minio/internal/kms"
+	"github.com/jackblack369/minio/internal/logger"
 	dns2 "github.com/miekg/dns"
 	"github.com/minio/cli"
 	consoleCerts "github.com/minio/console/pkg/certs"
@@ -56,12 +62,6 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/minio/minio-go/v7/pkg/set"
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/handlers"
-	"github.com/minio/minio/internal/kms"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/certs"
 	"github.com/minio/pkg/console"
 	"github.com/minio/pkg/ellipses"
@@ -83,7 +83,7 @@ func init() {
 		if mousetrap.StartedByExplorer() {
 			fmt.Printf("Don't double-click %s\n", os.Args[0])
 			fmt.Println("You need to open cmd.exe/PowerShell and run it from the command line")
-			fmt.Println("Refer to the docs here on how to run it as a Windows Service https://github.com/minio/minio-service/tree/master/windows")
+			fmt.Println("Refer to the docs here on how to run it as a Windows Service https://github.com/jackblack369/minio-service/tree/master/windows")
 			fmt.Println("Press the Enter Key to Exit")
 			fmt.Scanln()
 			os.Exit(1)

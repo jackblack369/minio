@@ -21,7 +21,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/tinylib/msgp/msgp"
 )
 

@@ -23,10 +23,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jackblack369/minio/internal/config/storageclass"
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/config/storageclass"
-	"github.com/minio/minio/internal/logger"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
 

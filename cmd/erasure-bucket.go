@@ -21,9 +21,9 @@ import (
 	"context"
 	"errors"
 
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/sync/errgroup"
 	"github.com/minio/minio-go/v7/pkg/s3utils"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/sync/errgroup"
 )
 
 // list all errors that can be ignore in a bucket operation.

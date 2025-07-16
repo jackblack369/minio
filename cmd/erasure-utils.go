@@ -23,9 +23,9 @@ import (
 	"fmt"
 	"io"
 
+	xioutil "github.com/jackblack369/minio/internal/ioutil"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/klauspost/reedsolomon"
-	xioutil "github.com/minio/minio/internal/ioutil"
-	"github.com/minio/minio/internal/logger"
 )
 
 // getDataBlockLen - get length of data blocks from encoded blocks.

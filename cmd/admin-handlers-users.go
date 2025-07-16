@@ -27,10 +27,10 @@ import (
 	"sort"
 
 	"github.com/gorilla/mux"
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/config/dns"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/config/dns"
-	"github.com/minio/minio/internal/logger"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
 
