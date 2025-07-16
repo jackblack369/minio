@@ -26,4 +26,5 @@ const (
 	TargetConsole
 	TargetHTTP
 	TargetKafka
+	TargetFile
 )

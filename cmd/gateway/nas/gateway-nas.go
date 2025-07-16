@@ -18,14 +18,13 @@ package nas
 
 import (
 	"context"
-	"log/slog"
 	"os"
 
 	minio "github.com/jackblack369/minio/cmd"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/logger/target/file"
 	"github.com/minio/cli"
 	"github.com/minio/madmin-go"
-	"github.com/natefinch/lumberjack"
-	"github.com/robfig/cron/v3"
 	"gopkg.in/yaml.v2"
 )
 
@@ -99,41 +98,40 @@ func LoadNASConfig(path string) (*NASConfig, error) {
 	}
 	return config, nil
 }
-func scheduleDailyRotate(l *lumberjack.Logger) {
-	c := cron.New()
-	c.AddFunc("0 0 * * *", func() {
-		_ = l.Rotate()
-	})
-	c.Start()
-}
 
-func InitLogger(cfg *LogConfig) *slog.Logger {
-	lj := &lumberjack.Logger{
-		Filename:   cfg.FilePath,
-		MaxSize:    cfg.MaxSizeMB, // MB
+func InitFileLogger(cfg *LogConfig) error {
+	// Create file target configuration
+	fileConfig := file.Config{
+		Enable:     true,
+		FilePath:   cfg.FilePath,
+		RetainDays: cfg.RetainDays,
+		MaxSizeMB:  cfg.MaxSizeMB,
 		MaxBackups: cfg.MaxBackups,
-		MaxAge:     cfg.RetainDays, // days
 		Compress:   cfg.Compress,
-		LocalTime:  true,
+		JSONFormat: true, // Use JSON format for MinIO logs
 	}
 
-	scheduleDailyRotate(lj)
+	// Create and initialize file target
+	fileTarget := file.New(fileConfig)
+	if err := fileTarget.Init(); err != nil {
+		return err
+	}
 
-	handler := slog.NewJSONHandler(lj, nil)
-	logger := slog.New(handler)
-	slog.SetDefault(logger)
-	return logger
+	// Add file target to MinIO logger system
+	return logger.AddSystemTarget(fileTarget)
 }
 
 // Handler for 'minio gateway nas' command line.
 func nasGatewayMain(ctx *cli.Context) {
-	//config, err := LoadNASConfig("gateway.yml")
-	//if err != nil {
-	//	panic(err)
-	//}
-	// logger := InitLogger(&config.Log)
+	config, err := LoadNASConfig("gateway.yml")
+	if err != nil {
+		panic(err)
+	}
 
-	// schedule Daily Rotate log file
+	// Initialize file logger with MinIO logger system
+	if err := InitFileLogger(&config.Log); err != nil {
+		panic(err)
+	}
 
 	// Validate gateway arguments.
 	if !ctx.Args().Present() || ctx.Args().First() == "help" {

@@ -27,6 +27,7 @@ import (
 	xnet "github.com/minio/pkg/net"
 
 	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/logger/target/file"
 	"github.com/jackblack369/minio/internal/logger/target/http"
 	"github.com/jackblack369/minio/internal/logger/target/kafka"
 )
@@ -202,6 +203,7 @@ var (
 type Config struct {
 	Console      Console                 `json:"console"`
 	HTTP         map[string]http.Config  `json:"http"`
+	File         map[string]file.Config  `json:"file"`
 	AuditWebhook map[string]http.Config  `json:"audit"`
 	AuditKafka   map[string]kafka.Config `json:"audit_kafka"`
 }
@@ -214,6 +216,7 @@ func NewConfig() Config {
 			Enabled: true,
 		},
 		HTTP:         make(map[string]http.Config),
+		File:         make(map[string]file.Config),
 		AuditWebhook: make(map[string]http.Config),
 		AuditKafka:   make(map[string]kafka.Config),
 	}

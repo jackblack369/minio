@@ -21,6 +21,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/jackblack369/minio/internal/logger/target/file"
 	"github.com/jackblack369/minio/internal/logger/target/http"
 	"github.com/jackblack369/minio/internal/logger/target/kafka"
 	"github.com/jackblack369/minio/internal/logger/target/types"
@@ -141,12 +142,32 @@ func initKafkaTargets(cfgMap map[string]kafka.Config) (tgts []Target, err error)
 	return tgts, err
 }
 
+func initFileTargets(cfgMap map[string]file.Config) (tgts []Target, err error) {
+	for _, l := range cfgMap {
+		if l.Enable {
+			t := file.New(l)
+			if err = t.Init(); err != nil {
+				return tgts, err
+			}
+			tgts = append(tgts, t)
+		}
+	}
+	return tgts, err
+}
+
 // UpdateSystemTargets swaps targets with newly loaded ones from the cfg
 func UpdateSystemTargets(cfg Config) error {
 	updated, err := initSystemTargets(cfg.HTTP)
 	if err != nil {
 		return err
 	}
+
+	// Add file targets
+	fileTargets, err := initFileTargets(cfg.File)
+	if err != nil {
+		return err
+	}
+	updated = append(updated, fileTargets...)
 
 	swapMu.Lock()
 	for _, tgt := range systemTargets {
