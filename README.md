@@ -1,6 +1,6 @@
 # MinIO Quickstart Guide
 
-[![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io) [![Docker Pulls](https://img.shields.io/docker/pulls/minio/minio.svg?maxAge=604800)](https://hub.docker.com/r/minio/minio/) [![license](https://img.shields.io/badge/license-AGPL%20V3-blue)](https://github.com/minio/minio/blob/master/LICENSE)
+[![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io) [![Docker Pulls](https://img.shields.io/docker/pulls/minio/minio.svg?maxAge=604800)](https://hub.docker.com/r/minio/minio/) [![license](https://img.shields.io/badge/license-AGPL%20V3-blue)](https://github.com/jackblack369/minio/blob/master/LICENSE)
 
 [![MinIO](https://raw.githubusercontent.com/minio/minio/master/.github/logo.svg?sanitize=true)](https://min.io)
 
@@ -128,7 +128,7 @@ You can also connect using any S3-compatible tool, such as the MinIO Client `mc`
 Use the following commands to compile and run a standalone MinIO server from source. Source installation is only intended for developers and advanced users. If you do not have a working Golang environment, please follow [How to install Golang](https://golang.org/doc/install). Minimum version required is [go1.17](https://golang.org/dl/#stable)
 
 ```sh
-GO111MODULE=on go install github.com/minio/minio@latest
+GO111MODULE=on go install github.com/jackblack369/minio@latest
 ```
 
 The MinIO deployment starts using default root credentials `minioadmin:minioadmin`. You can test the deployment using the MinIO Console, an embedded web-based object browser built into MinIO Server. Point a web browser running on the host machine to <http://127.0.0.1:9000> and log in with the root credentials. You can use the Browser to create buckets, upload objects, and browse the contents of the MinIO server.
@@ -224,7 +224,7 @@ For example: `export MINIO_SERVER_URL="https://minio.example.net"`
 
 | Dashboard                                                                                   | Creating a bucket                                                                           |
 | -------------                                                                               | -------------                                                                               |
-| ![Dashboard](https://github.com/minio/minio/blob/master/docs/screenshots/pic1.png?raw=true) | ![Dashboard](https://github.com/minio/minio/blob/master/docs/screenshots/pic2.png?raw=true) |
+| ![Dashboard](https://github.com/jackblack369/minio/blob/master/docs/screenshots/pic1.png?raw=true) | ![Dashboard](https://github.com/jackblack369/minio/blob/master/docs/screenshots/pic2.png?raw=true) |
 
 ## Test using MinIO Client `mc`
 
@@ -265,10 +265,10 @@ mc admin update <minio alias, e.g., myminio>
 
 ## Contribute to MinIO Project
 
-Please follow MinIO [Contributor's Guide](https://github.com/minio/minio/blob/master/CONTRIBUTING.md)
+Please follow MinIO [Contributor's Guide](https://github.com/jackblack369/minio/blob/master/CONTRIBUTING.md)
 
 ## License
 
-- MinIO source is licensed under the GNU AGPLv3 license that can be found in the [LICENSE](https://github.com/minio/minio/blob/master/LICENSE) file.
-- MinIO [Documentation](https://github.com/minio/minio/tree/master/docs) © 2021 by MinIO, Inc is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-- [License Compliance](https://github.com/minio/minio/blob/master/COMPLIANCE.md)
+- MinIO source is licensed under the GNU AGPLv3 license that can be found in the [LICENSE](https://github.com/jackblack369/minio/blob/master/LICENSE) file.
+- MinIO [Documentation](https://github.com/jackblack369/minio/tree/master/docs) © 2021 by MinIO, Inc is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- [License Compliance](https://github.com/jackblack369/minio/blob/master/COMPLIANCE.md)

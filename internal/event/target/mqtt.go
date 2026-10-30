@@ -30,7 +30,7 @@ import (
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/minio/minio/internal/event"
+	"github.com/jackblack369/minio/internal/event"
 	xnet "github.com/minio/pkg/net"
 )
 

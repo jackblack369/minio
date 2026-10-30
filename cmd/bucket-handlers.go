@@ -38,21 +38,21 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 
+	sse "github.com/jackblack369/minio/internal/bucket/encryption"
+	objectlock "github.com/jackblack369/minio/internal/bucket/object/lock"
+	"github.com/jackblack369/minio/internal/bucket/replication"
+	"github.com/jackblack369/minio/internal/config/dns"
+	"github.com/jackblack369/minio/internal/crypto"
+	"github.com/jackblack369/minio/internal/event"
+	"github.com/jackblack369/minio/internal/handlers"
+	"github.com/jackblack369/minio/internal/hash"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/kms"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/sync/errgroup"
 	"github.com/minio/madmin-go"
 	"github.com/minio/minio-go/v7/pkg/set"
 	"github.com/minio/minio-go/v7/pkg/tags"
-	sse "github.com/minio/minio/internal/bucket/encryption"
-	objectlock "github.com/minio/minio/internal/bucket/object/lock"
-	"github.com/minio/minio/internal/bucket/replication"
-	"github.com/minio/minio/internal/config/dns"
-	"github.com/minio/minio/internal/crypto"
-	"github.com/minio/minio/internal/event"
-	"github.com/minio/minio/internal/handlers"
-	"github.com/minio/minio/internal/hash"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/kms"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/sync/errgroup"
 	"github.com/minio/pkg/bucket/policy"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
@@ -69,11 +69,16 @@ const (
 // - Check if a bucket has an entry in etcd backend
 // -- If no, make an entry
 // -- If yes, check if the entry matches local IP check if we
-//    need to update the entry then proceed to update
+//
+//	need to update the entry then proceed to update
+//
 // -- If yes, check if the IP of entry matches local IP.
-//    This means entry is for this instance.
+//
+//	This means entry is for this instance.
+//
 // -- If IP of the entry doesn't match, this means entry is
-//    for another instance. Log an error to console.
+//
+//	for another instance. Log an error to console.
 func initFederatorBackend(buckets []BucketInfo, objLayer ObjectLayer) {
 	if len(buckets) == 0 {
 		return
@@ -229,7 +234,6 @@ func (api objectAPIHandlers) GetBucketLocationHandler(w http.ResponseWriter, r *
 // using the Initiate Multipart Upload request, but has not yet been
 // completed or aborted. This operation returns at most 1,000 multipart
 // uploads in the response.
-//
 func (api objectAPIHandlers) ListMultipartUploadsHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := newContext(r, w, "ListMultipartUploads")
 

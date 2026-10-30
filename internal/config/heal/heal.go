@@ -25,7 +25,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/minio/minio/internal/config"
+	"github.com/jackblack369/minio/internal/config"
 	"github.com/minio/pkg/env"
 )
 
@@ -60,7 +60,9 @@ type Config struct {
 
 // BitrotScanCycle returns the configured cycle for the scanner healing
 // -1 for not enabled
-//  0 for contiunous bitrot scanning
+//
+//	0 for contiunous bitrot scanning
+//
 // >0 interval duration between cycles
 func (opts Config) BitrotScanCycle() (d time.Duration) {
 	configMutex.RLock()

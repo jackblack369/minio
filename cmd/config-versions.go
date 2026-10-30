@@ -20,17 +20,17 @@ package cmd
 import (
 	"sync"
 
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/config/cache"
-	"github.com/minio/minio/internal/config/compress"
-	xldap "github.com/minio/minio/internal/config/identity/ldap"
-	"github.com/minio/minio/internal/config/identity/openid"
-	"github.com/minio/minio/internal/config/notify"
-	"github.com/minio/minio/internal/config/policy/opa"
-	"github.com/minio/minio/internal/config/storageclass"
-	"github.com/minio/minio/internal/event/target"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/config/cache"
+	"github.com/jackblack369/minio/internal/config/compress"
+	xldap "github.com/jackblack369/minio/internal/config/identity/ldap"
+	"github.com/jackblack369/minio/internal/config/identity/openid"
+	"github.com/jackblack369/minio/internal/config/notify"
+	"github.com/jackblack369/minio/internal/config/policy/opa"
+	"github.com/jackblack369/minio/internal/config/storageclass"
+	"github.com/jackblack369/minio/internal/event/target"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/pkg/quick"
 )
 

@@ -19,9 +19,9 @@ package nas
 import (
 	"context"
 
+	minio "github.com/jackblack369/minio/cmd"
 	"github.com/minio/cli"
 	"github.com/minio/madmin-go"
-	minio "github.com/minio/minio/cmd"
 )
 
 var (
@@ -44,13 +44,13 @@ PATH:
 
 EXAMPLES:
   1. Start minio gateway server for NAS backend
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_USER{{.AssignmentOperator}}accesskey
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_PASSWORD{{.AssignmentOperator}}secretkey
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_USER{{.AssignmentOperator}}accesskey
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_PASSWORD{{.AssignmentOperator}}secretkey
      {{.Prompt}} {{.HelpName}} /shared/nasvol
 
   2. Start minio gateway server for NAS with edge caching enabled
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_USER{{.AssignmentOperator}}accesskey
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_PASSWORD{{.AssignmentOperator}}secretkey
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_USER{{.AssignmentOperator}}accesskey
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_PASSWORD{{.AssignmentOperator}}secretkey
      {{.Prompt}} {{.EnvVarSetCommand}} MINIO_CACHE_DRIVES{{.AssignmentOperator}}"/mnt/drive1,/mnt/drive2,/mnt/drive3,/mnt/drive4"
      {{.Prompt}} {{.EnvVarSetCommand}} MINIO_CACHE_EXCLUDE{{.AssignmentOperator}}"bucket1/*,*.png"
      {{.Prompt}} {{.EnvVarSetCommand}} MINIO_CACHE_QUOTA{{.AssignmentOperator}}90

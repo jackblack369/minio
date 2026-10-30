@@ -22,7 +22,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/logger"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
 

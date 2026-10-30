@@ -33,11 +33,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/ioutil"
 	"github.com/klauspost/compress/zip"
 	"github.com/klauspost/compress/zstd"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/ioutil"
 )
 
 func TestReadXLMetaNoData(t *testing.T) {

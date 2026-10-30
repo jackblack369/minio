@@ -27,12 +27,12 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/config/identity/openid"
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/minio/madmin-go"
 	"github.com/minio/minio-go/v7/pkg/set"
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/config/identity/openid"
-	"github.com/minio/minio/internal/logger"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
 

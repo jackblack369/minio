@@ -57,14 +57,14 @@ import (
 	"github.com/fatih/color"
 
 	"github.com/gorilla/mux"
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/crypto"
+	"github.com/jackblack369/minio/internal/hash"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/rest"
 	"github.com/minio/minio-go/v7/pkg/s3utils"
 	"github.com/minio/minio-go/v7/pkg/signer"
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/crypto"
-	"github.com/minio/minio/internal/hash"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/rest"
 	"github.com/minio/pkg/bucket/policy"
 )
 
@@ -119,19 +119,17 @@ func TestMain(m *testing.M) {
 // concurrency level for certain parallel tests.
 const testConcurrencyLevel = 10
 
-//
 // Excerpts from @lsegal - https://github.com/aws/aws-sdk-js/issues/659#issuecomment-120477258
 //
-//  User-Agent:
+//	User-Agent:
 //
-//      This is ignored from signing because signing this causes problems with generating pre-signed URLs
-//      (that are executed by other agents) or when customers pass requests through proxies, which may
-//      modify the user-agent.
+//	    This is ignored from signing because signing this causes problems with generating pre-signed URLs
+//	    (that are executed by other agents) or when customers pass requests through proxies, which may
+//	    modify the user-agent.
 //
-//  Authorization:
+//	Authorization:
 //
-//      Is skipped for obvious reasons
-//
+//	    Is skipped for obvious reasons
 var ignoredHeaders = map[string]bool{
 	"Authorization": true,
 	"User-Agent":    true,
@@ -291,8 +289,9 @@ func isSameType(obj1, obj2 interface{}) bool {
 
 // TestServer encapsulates an instantiation of a MinIO instance with a temporary backend.
 // Example usage:
-//   s := StartTestServer(t,"Erasure")
-//   defer s.Stop()
+//
+//	s := StartTestServer(t,"Erasure")
+//	defer s.Stop()
 type TestServer struct {
 	Root         string
 	Disks        EndpointServerPools
@@ -702,7 +701,7 @@ func newTestStreamingRequest(method, urlStr string, dataLength, chunkSize int64,
 
 	if body == nil {
 		// this is added to avoid panic during ioutil.ReadAll(req.Body).
-		// th stack trace can be found here  https://github.com/minio/minio/pull/2074 .
+		// th stack trace can be found here  https://github.com/jackblack369/minio/pull/2074 .
 		// This is very similar to https://github.com/golang/go/issues/7527.
 		req.Body = ioutil.NopCloser(bytes.NewReader([]byte("")))
 	}
@@ -1568,11 +1567,14 @@ func prepareTestBackend(ctx context.Context, instanceType string) (ObjectLayer, 
 // response for anonymous/unsigned and unknown signature type HTTP request.
 
 // Here is the brief description of some of the arguments to the function below.
-//   apiRouter - http.Handler with the relevant API endPoint (API endPoint under test) registered.
-//   anonReq   - unsigned *http.Request to invoke the handler's response for anonymous requests.
-//   policyFunc    - function to return bucketPolicy statement which would permit the anonymous request to be served.
+//
+//	apiRouter - http.Handler with the relevant API endPoint (API endPoint under test) registered.
+//	anonReq   - unsigned *http.Request to invoke the handler's response for anonymous requests.
+//	policyFunc    - function to return bucketPolicy statement which would permit the anonymous request to be served.
+//
 // The test works in 2 steps, here is the description of the steps.
-//   STEP 1: Call the handler with the unsigned HTTP request (anonReq), assert for the `ErrAccessDenied` error response.
+//
+//	STEP 1: Call the handler with the unsigned HTTP request (anonReq), assert for the `ErrAccessDenied` error response.
 func ExecObjectLayerAPIAnonTest(t *testing.T, obj ObjectLayer, testName, bucketName, objectName, instanceType string, apiRouter http.Handler,
 	anonReq *http.Request, bucketPolicy *policy.Policy,
 ) {

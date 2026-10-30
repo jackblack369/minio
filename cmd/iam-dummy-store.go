@@ -21,7 +21,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/minio/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/auth"
 )
 
 type iamDummyStore struct {

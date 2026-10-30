@@ -29,10 +29,10 @@ import (
 	"syscall"
 
 	"github.com/gorilla/mux"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/cli"
 	"github.com/minio/madmin-go"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/certs"
 	"github.com/minio/pkg/env"
 )
@@ -341,12 +341,12 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	verifyObjectLayerFeatures("gateway "+gatewayName, newObject)
 
 	// Check for updates in non-blocking manner.
-	go func() {
-		if !globalCLIContext.Quiet && !globalInplaceUpdateDisabled {
-			// Check for new updates from dl.min.io.
-			checkUpdate(getMinioMode())
-		}
-	}()
+	// go func() {
+	// 	if !globalCLIContext.Quiet && !globalInplaceUpdateDisabled {
+	// 		// Check for new updates from dl.min.io.
+	// 		checkUpdate(getMinioMode())
+	// 	}
+	// }()
 
 	if !globalCLIContext.Quiet {
 		// Print gateway startup message.
@@ -374,16 +374,6 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 		}
 		logger.Info("======")
 	}
-
-	// TODO: remove the following line by June 1st.
-	// 	logger.Info(
-	// 		color.RedBold(`
-	// ===================================================================================
-	// **** WARNING: MinIO Gateway will be removed by June 1st from MinIO repository *****
-	//
-	// Please read https://github.com/minio/minio/issues/14331
-	// ===================================================================================
-	// `))
 
 	<-globalOSSignalCh
 }

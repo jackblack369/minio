@@ -28,10 +28,10 @@ import (
 	pathutil "path"
 	"time"
 
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/lock"
+	"github.com/jackblack369/minio/internal/logger"
 	jsoniter "github.com/json-iterator/go"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/lock"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/mimedb"
 )
 

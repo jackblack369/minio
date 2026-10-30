@@ -33,13 +33,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/minio/minio/internal/auth"
-	objectlock "github.com/minio/minio/internal/bucket/object/lock"
-	"github.com/minio/minio/internal/etag"
-	"github.com/minio/minio/internal/hash"
-	xhttp "github.com/minio/minio/internal/http"
-	xjwt "github.com/minio/minio/internal/jwt"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/auth"
+	objectlock "github.com/jackblack369/minio/internal/bucket/object/lock"
+	"github.com/jackblack369/minio/internal/etag"
+	"github.com/jackblack369/minio/internal/hash"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	xjwt "github.com/jackblack369/minio/internal/jwt"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/pkg/bucket/policy"
 	iampolicy "github.com/minio/pkg/iam/policy"
 )
@@ -288,9 +288,10 @@ func checkClaimsFromToken(r *http.Request, cred auth.Credentials) (map[string]in
 }
 
 // Check request auth type verifies the incoming http request
-// - validates the request signature
-// - validates the policy action if anonymous tests bucket policies if any,
-//   for authenticated requests validates IAM policies.
+//   - validates the request signature
+//   - validates the policy action if anonymous tests bucket policies if any,
+//     for authenticated requests validates IAM policies.
+//
 // returns APIErrorCode if any to be replied to the client.
 func checkRequestAuthType(ctx context.Context, r *http.Request, action policy.Action, bucketName, objectName string) (s3Err APIErrorCode) {
 	_, _, s3Err = checkRequestAuthTypeCredential(ctx, r, action, bucketName, objectName)
@@ -298,9 +299,10 @@ func checkRequestAuthType(ctx context.Context, r *http.Request, action policy.Ac
 }
 
 // Check request auth type verifies the incoming http request
-// - validates the request signature
-// - validates the policy action if anonymous tests bucket policies if any,
-//   for authenticated requests validates IAM policies.
+//   - validates the request signature
+//   - validates the policy action if anonymous tests bucket policies if any,
+//     for authenticated requests validates IAM policies.
+//
 // returns APIErrorCode if any to be replied to the client.
 // Additionally returns the accessKey used in the request, and if this request is by an admin.
 func checkRequestAuthTypeCredential(ctx context.Context, r *http.Request, action policy.Action, bucketName, objectName string) (cred auth.Credentials, owner bool, s3Err APIErrorCode) {

@@ -21,10 +21,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/klauspost/compress/gzhttp"
 	"github.com/klauspost/compress/gzip"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/logger"
 )
 
 const (

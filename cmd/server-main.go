@@ -34,15 +34,15 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jackblack369/minio/internal/auth"
+	"github.com/jackblack369/minio/internal/bucket/bandwidth"
+	"github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/config"
+	"github.com/jackblack369/minio/internal/fips"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/rest"
 	"github.com/minio/cli"
-	"github.com/minio/minio/internal/auth"
-	"github.com/minio/minio/internal/bucket/bandwidth"
-	"github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/config"
-	"github.com/minio/minio/internal/fips"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/rest"
 	"github.com/minio/pkg/certs"
 	"github.com/minio/pkg/env"
 )
@@ -106,13 +106,13 @@ EXAMPLES:
      {{.Prompt}} {{.HelpName}} /mnt/data{1...64}
 
   3. Start distributed minio server on an 32 node setup with 32 drives each, run following command on all the nodes
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_USER{{.AssignmentOperator}}minio
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_PASSWORD{{.AssignmentOperator}}miniostorage
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_USER{{.AssignmentOperator}}minio
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_PASSWORD{{.AssignmentOperator}}miniostorage
      {{.Prompt}} {{.HelpName}} http://node{1...32}.example.com/mnt/export{1...32}
 
   4. Start distributed minio server in an expanded setup, run the following command on all the nodes
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_USER{{.AssignmentOperator}}minio
-     {{.Prompt}} {{.EnvVarSetCommand}} MINIO_ROOT_PASSWORD{{.AssignmentOperator}}miniostorage
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_USER{{.AssignmentOperator}}minio
+     {{.Prompt}} {{.EnvVarSetCommand}} S3_GATEWAY_ROOT_PASSWORD{{.AssignmentOperator}}miniostorage
      {{.Prompt}} {{.HelpName}} http://node{1...16}.example.com/mnt/export{1...32} \
             http://node{17...64}.example.com/mnt/export{1...64}
 `,
@@ -437,12 +437,12 @@ func serverMain(ctx *cli.Context) {
 	}
 
 	// Check for updates in non-blocking manner.
-	go func() {
-		if !globalCLIContext.Quiet && !globalInplaceUpdateDisabled {
-			// Check for new updates from dl.min.io.
-			checkUpdate(getMinioMode())
-		}
-	}()
+	// go func() {
+	// 	if !globalCLIContext.Quiet && !globalInplaceUpdateDisabled {
+	// 		// Check for new updates from dl.min.io.
+	// 		checkUpdate(getMinioMode())
+	// 	}
+	// }()
 
 	if !globalActiveCred.IsValid() && globalIsDistErasure {
 		globalActiveCred = auth.DefaultCredentials
@@ -519,7 +519,7 @@ func serverMain(ctx *cli.Context) {
 	initBackgroundExpiry(GlobalContext, newObject)
 
 	if globalActiveCred.Equal(auth.DefaultCredentials) {
-		msg := fmt.Sprintf("WARNING: Detected default credentials '%s', we recommend that you change these values with 'MINIO_ROOT_USER' and 'MINIO_ROOT_PASSWORD' environment variables",
+		msg := fmt.Sprintf("WARNING: Detected default credentials '%s', we recommend that you change these values with 'S3_GATEWAY_ROOT_USER' and 'S3_GATEWAY_ROOT_PASSWORD' environment variables",
 			globalActiveCred)
 		logger.Info(color.RedBold(msg))
 	}

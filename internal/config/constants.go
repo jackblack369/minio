@@ -26,8 +26,8 @@ const (
 const (
 	EnvAccessKey    = "MINIO_ACCESS_KEY"
 	EnvSecretKey    = "MINIO_SECRET_KEY"
-	EnvRootUser     = "MINIO_ROOT_USER"
-	EnvRootPassword = "MINIO_ROOT_PASSWORD"
+	EnvRootUser     = "S3_GATEWAY_ROOT_USER"
+	EnvRootPassword = "S3_GATEWAY_ROOT_PASSWORD"
 
 	// Legacy files
 	EnvAccessKeyFile = "MINIO_ACCESS_KEY_FILE"

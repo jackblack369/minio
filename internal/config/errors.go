@@ -124,7 +124,7 @@ var (
 	ErrInvalidCredentialsBackendEncrypted = newErrFn(
 		"Invalid credentials",
 		"Please set correct credentials in the environment for decryption",
-		`Detected encrypted config backend, correct access and secret keys should be specified via environment variables MINIO_ROOT_USER and MINIO_ROOT_PASSWORD to be able to decrypt the MinIO config, user IAM and policies`,
+		`Detected encrypted config backend, correct access and secret keys should be specified via environment variables S3_GATEWAY_ROOT_USER and S3_GATEWAY_ROOT_PASSWORD to be able to decrypt the MinIO config, user IAM and policies`,
 	)
 
 	ErrInvalidCredentials = newErrFn(
@@ -136,25 +136,25 @@ var (
 	ErrMissingEnvCredentialRootUser = newErrFn(
 		"Missing credential environment variable, \""+EnvRootUser+"\"",
 		"Environment variable \""+EnvRootUser+"\" is missing",
-		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables MINIO_ROOT_USER and MINIO_ROOT_PASSWORD respectively`,
+		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables S3_GATEWAY_ROOT_USER and S3_GATEWAY_ROOT_PASSWORD respectively`,
 	)
 
 	ErrMissingEnvCredentialRootPassword = newErrFn(
 		"Missing credential environment variable, \""+EnvRootPassword+"\"",
 		"Environment variable \""+EnvRootPassword+"\" is missing",
-		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables MINIO_ROOT_USER and MINIO_ROOT_PASSWORD respectively`,
+		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables S3_GATEWAY_ROOT_USER and S3_GATEWAY_ROOT_PASSWORD respectively`,
 	)
 
 	ErrMissingEnvCredentialAccessKey = newErrFn(
 		"Missing credential environment variable, \""+EnvAccessKey+"\"",
 		"Environment variables \""+EnvAccessKey+"\" and \""+EnvSecretKey+"\" are deprecated",
-		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables MINIO_ROOT_USER and MINIO_ROOT_PASSWORD respectively`,
+		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables S3_GATEWAY_ROOT_USER and S3_GATEWAY_ROOT_PASSWORD respectively`,
 	)
 
 	ErrMissingEnvCredentialSecretKey = newErrFn(
 		"Missing credential environment variable, \""+EnvSecretKey+"\"",
 		"Environment variables \""+EnvSecretKey+"\" and \""+EnvAccessKey+"\" are deprecated",
-		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables MINIO_ROOT_USER and MINIO_ROOT_PASSWORD respectively`,
+		`Root user name (access key) and root password (secret key) are expected to be specified via environment variables S3_GATEWAY_ROOT_USER and S3_GATEWAY_ROOT_PASSWORD respectively`,
 	)
 
 	ErrInvalidErasureEndpoints = newErrFn(
@@ -174,7 +174,7 @@ var (
 		"Please check the value",
 		`MINIO_STORAGE_CLASS_STANDARD: Format "EC:<Default_Parity_Standard_Class>" (e.g. "EC:3"). This sets the number of parity disks for MinIO server in Standard mode. Objects are stored in Standard mode, if storage class is not defined in Put request
 MINIO_STORAGE_CLASS_RRS: Format "EC:<Default_Parity_Reduced_Redundancy_Class>" (e.g. "EC:3"). This sets the number of parity disks for MinIO server in Reduced Redundancy mode. Objects are stored in Reduced Redundancy mode, if Put request specifies RRS storage class
-Refer to the link https://github.com/minio/minio/tree/master/docs/erasure/storage-class for more information`,
+Refer to the link https://github.com/jackblack369/minio/tree/master/docs/erasure/storage-class for more information`,
 	)
 
 	ErrUnexpectedBackendVersion = newErrFn(

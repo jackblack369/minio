@@ -27,8 +27,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/logger"
 )
 
 // healStatusSummary - overall short summary of a healing sequence

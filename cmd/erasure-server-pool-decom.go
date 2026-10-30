@@ -30,8 +30,8 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/minio/minio/internal/hash"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/hash"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/pkg/console"
 	"github.com/minio/pkg/env"
 )
@@ -608,6 +608,7 @@ func (z *erasureServerPools) decommissionObject(ctx context.Context, bucket stri
 }
 
 // versionsSorter sorts FileInfo slices by version.
+//
 //msgp:ignore versionsSorter
 type versionsSorter []FileInfo
 

@@ -27,7 +27,7 @@ If this case is urgent, please subscribe to [Subnet](https://min.io/pricing) so 
 ## Steps to Reproduce (for bugs)
 <!--- Provide a link to a live example, or an unambiguous set of steps to -->
 <!--- reproduce this bug. Include code to reproduce, if relevant -->
-<!--- and make sure you have followed https://github.com/minio/minio/tree/release/docs/debugging to capture relevant logs -->
+<!--- and make sure you have followed https://github.com/jackblack369/minio/tree/release/docs/debugging to capture relevant logs -->
 
 1.
 2.

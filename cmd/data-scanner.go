@@ -36,14 +36,14 @@ import (
 
 	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/dustin/go-humanize"
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/bucket/object/lock"
+	"github.com/jackblack369/minio/internal/bucket/replication"
+	"github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/config/heal"
+	"github.com/jackblack369/minio/internal/event"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	"github.com/minio/minio/internal/bucket/object/lock"
-	"github.com/minio/minio/internal/bucket/replication"
-	"github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/config/heal"
-	"github.com/minio/minio/internal/event"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/console"
 )
 

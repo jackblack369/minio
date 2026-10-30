@@ -24,9 +24,9 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/jackblack369/minio/internal/auth"
 	"github.com/minio/madmin-go"
 	"github.com/minio/minio-go/v7/pkg/set"
-	"github.com/minio/minio/internal/auth"
 	"github.com/minio/pkg/env"
 )
 

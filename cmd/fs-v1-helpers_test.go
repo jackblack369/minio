@@ -25,7 +25,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/minio/minio/internal/lock"
+	"github.com/jackblack369/minio/internal/lock"
 )
 
 func TestFSRenameFile(t *testing.T) {

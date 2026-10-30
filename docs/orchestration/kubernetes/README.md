@@ -6,9 +6,9 @@ MinIO is a high performance distributed object storage server, designed for larg
 
 There are multiple options to deploy MinIO on Kubernetes:
 
-- MinIO-Operator: Operator offers seamless way to create and update highly available distributed MinIO clusters. Refer [MinIO Operator documentation](https://github.com/minio/minio-operator/blob/master/README.md) for more details.
+- MinIO-Operator: Operator offers seamless way to create and update highly available distributed MinIO clusters. Refer [MinIO Operator documentation](https://github.com/jackblack369/minio-operator/blob/master/README.md) for more details.
 
-- Helm Chart: MinIO Helm Chart offers customizable and easy MinIO deployment with a single command. Refer [MinIO Helm Chart documentation](https://github.com/minio/minio/tree/master/helm/minio) for more details.
+- Helm Chart: MinIO Helm Chart offers customizable and easy MinIO deployment with a single command. Refer [MinIO Helm Chart documentation](https://github.com/jackblack369/minio/tree/master/helm/minio) for more details.
 
 ## Monitoring MinIO in Kubernetes
 

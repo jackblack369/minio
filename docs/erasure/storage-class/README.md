@@ -82,7 +82,7 @@ export MINIO_STORAGE_CLASS_STANDARD=EC:3
 export MINIO_STORAGE_CLASS_RRS=EC:2
 ```
 
-Storage class can also be set via `mc admin config` get/set commands to update the configuration. Refer [storage class](https://github.com/minio/minio/tree/master/docs/config#storage-class) for
+Storage class can also be set via `mc admin config` get/set commands to update the configuration. Refer [storage class](https://github.com/jackblack369/minio/tree/master/docs/config#storage-class) for
 more details.
 
 #### Note

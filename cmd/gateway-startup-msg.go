@@ -21,8 +21,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/logger"
 )
 
 // Prints the formatted startup message.
@@ -41,7 +41,7 @@ func printGatewayStartupMessage(apiEndPoints []string, backendType string) {
 	printCLIAccessMsg(strippedAPIEndpoints[0], fmt.Sprintf("my%s", backendType))
 
 	// Prints documentation message.
-	printObjectAPIMsg()
+	// printObjectAPIMsg()
 
 	if globalMinioConsolePortAuto && globalBrowserEnabled {
 		msg := fmt.Sprintf("\nWARNING: Console endpoint is listening on a dynamic port (%s), please use --console-address \":PORT\" to choose a static port.",

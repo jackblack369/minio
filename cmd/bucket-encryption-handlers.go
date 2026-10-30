@@ -26,10 +26,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jackblack369/minio/internal/kms"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/kes"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/kms"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/pkg/bucket/policy"
 )
 

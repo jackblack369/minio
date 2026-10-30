@@ -2,6 +2,7 @@
 cover.out
 *~
 minio
+s3-gateway
 !*/
 site/
 **/*.test

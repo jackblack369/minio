@@ -25,8 +25,9 @@ import (
 
 // DiskInfo is an extended type which returns current
 // disk usage per path.
-//msgp:tuple DiskInfo
 // The above means that any added/deleted fields are incompatible.
+//
+//msgp:tuple DiskInfo
 type DiskInfo struct {
 	Total      uint64
 	Free       uint64
@@ -55,8 +56,9 @@ type DiskMetrics struct {
 type VolsInfo []VolInfo
 
 // VolInfo - represents volume stat information.
-//msgp:tuple VolInfo
 // The above means that any added/deleted fields are incompatible.
+//
+//msgp:tuple VolInfo
 type VolInfo struct {
 	// Name of the volume.
 	Name string
@@ -81,8 +83,9 @@ func (f FileInfoVersions) Size() (size int64) {
 }
 
 // FileInfoVersions represent a list of versions for a given file.
-//msgp:tuple FileInfoVersions
 // The above means that any added/deleted fields are incompatible.
+//
+//msgp:tuple FileInfoVersions
 type FileInfoVersions struct {
 	// Name of the volume.
 	Volume string `msg:"v,omitempty"`
@@ -121,14 +124,15 @@ type RawFileInfo struct {
 
 	// DiskMTime indicates the mtime of the xl.meta on disk
 	// This is mainly used for detecting a particular issue
-	// reported in https://github.com/minio/minio/pull/13803
+	// reported in https://github.com/jackblack369/minio/pull/13803
 	DiskMTime time.Time `msg:"dmt"`
 }
 
 // FileInfo - represents file stat information.
-//msgp:tuple FileInfo
 // The above means that any added/deleted fields are incompatible.
 // Make sure to bump the internode version at storage-rest-common.go
+//
+//msgp:tuple FileInfo
 type FileInfo struct {
 	// Name of the volume.
 	Volume string `msg:"v,omitempty"`
@@ -202,7 +206,7 @@ type FileInfo struct {
 
 	// DiskMTime indicates the mtime of the xl.meta on disk
 	// This is mainly used for detecting a particular issue
-	// reported in https://github.com/minio/minio/pull/13803
+	// reported in https://github.com/jackblack369/minio/pull/13803
 	DiskMTime time.Time `msg:"dmt"`
 }
 
@@ -221,10 +225,10 @@ func (fi FileInfo) Equals(ofi FileInfo) (ok bool) {
 }
 
 // GetDataDir returns an expected dataDir given FileInfo
-// - deleteMarker returns "delete-marker"
-// - returns "legacy" if FileInfo is XLV1 and DataDir is
-//   empty, returns DataDir otherwise
-// - returns "dataDir"
+//   - deleteMarker returns "delete-marker"
+//   - returns "legacy" if FileInfo is XLV1 and DataDir is
+//     empty, returns DataDir otherwise
+//   - returns "dataDir"
 func (fi FileInfo) GetDataDir() string {
 	if fi.Deleted {
 		return "delete-marker"

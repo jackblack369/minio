@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/jackblack369/minio/internal/bucket/replication"
+	xhttp "github.com/jackblack369/minio/internal/http"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/bucket/replication"
-	xhttp "github.com/minio/minio/internal/http"
 )
 
 var configs = []replication.Config{

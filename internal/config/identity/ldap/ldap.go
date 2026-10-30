@@ -27,8 +27,8 @@ import (
 	"time"
 
 	ldap "github.com/go-ldap/ldap/v3"
+	"github.com/jackblack369/minio/internal/auth"
 	"github.com/minio/minio-go/v7/pkg/set"
-	"github.com/minio/minio/internal/auth"
 )
 
 func getGroups(conn *ldap.Conn, sreq *ldap.SearchRequest) ([]string, error) {

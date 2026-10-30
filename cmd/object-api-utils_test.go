@@ -26,9 +26,9 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/jackblack369/minio/internal/config/compress"
+	"github.com/jackblack369/minio/internal/crypto"
 	"github.com/klauspost/compress/s2"
-	"github.com/minio/minio/internal/config/compress"
-	"github.com/minio/minio/internal/crypto"
 	"github.com/minio/pkg/trie"
 )
 

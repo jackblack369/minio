@@ -34,13 +34,13 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/jackblack369/minio/internal/crypto"
+	"github.com/jackblack369/minio/internal/etag"
+	"github.com/jackblack369/minio/internal/fips"
+	xhttp "github.com/jackblack369/minio/internal/http"
+	"github.com/jackblack369/minio/internal/kms"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/kes"
-	"github.com/minio/minio/internal/crypto"
-	"github.com/minio/minio/internal/etag"
-	"github.com/minio/minio/internal/fips"
-	xhttp "github.com/minio/minio/internal/http"
-	"github.com/minio/minio/internal/kms"
-	"github.com/minio/minio/internal/logger"
 	"github.com/minio/sio"
 )
 

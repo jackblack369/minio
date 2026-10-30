@@ -26,9 +26,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackblack369/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/sync/errgroup"
 	"github.com/minio/madmin-go"
-	"github.com/minio/minio/internal/logger"
-	"github.com/minio/minio/internal/sync/errgroup"
 )
 
 const reservedMetadataPrefixLowerDataShardFix = ReservedMetadataPrefixLower + "data-shard-fix"
@@ -37,7 +37,7 @@ const reservedMetadataPrefixLowerDataShardFix = ReservedMetadataPrefixLower + "d
 // acceptable delta of "delta" duration with maxTime.
 //
 // This code is primarily used for heuristic detection of
-// incorrect shards, as per https://github.com/minio/minio/pull/13803
+// incorrect shards, as per https://github.com/jackblack369/minio/pull/13803
 //
 // This check only is active if we could find maximally
 // occurring disk mtimes that are somewhat same across

@@ -18,7 +18,7 @@
 package cmd
 
 import (
-	"github.com/minio/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
 )
 
 // objSweeper determines if a transitioned object needs to be removed from the remote tier.
@@ -27,15 +27,17 @@ import (
 // // Perform a ObjectLayer.GetObjectInfo to fetch object version information
 // goiOpts := os.GetOpts()
 // gerr := objAPI.GetObjectInfo(ctx, bucket, object, goiOpts)
-// if gerr == nil {
-//    os.SetTransitionState(goi)
-// }
+//
+//	if gerr == nil {
+//	   os.SetTransitionState(goi)
+//	}
 //
 // // After the overwriting object operation is complete.
-// if jentry, ok := os.ShouldRemoveRemoteObject(); ok {
-//     err := globalTierJournal.AddEntry(jentry)
-//     logger.LogIf(ctx, err)
-// }
+//
+//	if jentry, ok := os.ShouldRemoveRemoteObject(); ok {
+//	    err := globalTierJournal.AddEntry(jentry)
+//	    logger.LogIf(ctx, err)
+//	}
 type objSweeper struct {
 	Object              string
 	Bucket              string

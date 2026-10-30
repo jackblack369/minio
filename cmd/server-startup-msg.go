@@ -25,9 +25,9 @@ import (
 	"strings"
 
 	humanize "github.com/dustin/go-humanize"
+	color "github.com/jackblack369/minio/internal/color"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	color "github.com/minio/minio/internal/color"
-	"github.com/minio/minio/internal/logger"
 	xnet "github.com/minio/pkg/net"
 )
 
@@ -71,7 +71,7 @@ func printStartupMessage(apiEndpoints []string, err error) {
 	printCLIAccessMsg(strippedAPIEndpoints[0], "myminio")
 
 	// Prints documentation message.
-	printObjectAPIMsg()
+	// printObjectAPIMsg()
 
 	if globalMinioConsolePortAuto && globalBrowserEnabled {
 		msg := fmt.Sprintf("\nWARNING: Console endpoint is listening on a dynamic port (%s), please use --console-address \":PORT\" to choose a static port.",

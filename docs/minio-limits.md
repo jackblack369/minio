@@ -36,7 +36,7 @@ For best deployment experience MinIO recommends operating systems RHEL/CentOS 8.
 
 ## List of Amazon S3 API's not supported on MinIO
 
-We found the following APIs to be redundant or less useful outside of AWS S3. If you have a different view on any of the APIs we missed, please open a [GitHub issue](https://github.com/minio/minio/issues).
+We found the following APIs to be redundant or less useful outside of AWS S3. If you have a different view on any of the APIs we missed, please open a [GitHub issue](https://github.com/jackblack369/minio/issues).
 
 ### List of Amazon S3 Bucket API's not supported on MinIO
 

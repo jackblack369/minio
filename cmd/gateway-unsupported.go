@@ -21,12 +21,12 @@ import (
 	"context"
 	"errors"
 
-	"github.com/minio/minio/internal/logger"
+	"github.com/jackblack369/minio/internal/logger"
 
+	bucketsse "github.com/jackblack369/minio/internal/bucket/encryption"
+	"github.com/jackblack369/minio/internal/bucket/lifecycle"
+	"github.com/jackblack369/minio/internal/bucket/versioning"
 	"github.com/minio/minio-go/v7/pkg/tags"
-	bucketsse "github.com/minio/minio/internal/bucket/encryption"
-	"github.com/minio/minio/internal/bucket/lifecycle"
-	"github.com/minio/minio/internal/bucket/versioning"
 	"github.com/minio/pkg/bucket/policy"
 
 	"github.com/minio/madmin-go"

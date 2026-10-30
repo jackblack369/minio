@@ -25,7 +25,7 @@ import (
 	"syscall"
 
 	"github.com/dustin/go-humanize"
-	"github.com/minio/minio/internal/disk"
+	"github.com/jackblack369/minio/internal/disk"
 )
 
 // ODirectReader - to support O_DIRECT reads for erasure backends.

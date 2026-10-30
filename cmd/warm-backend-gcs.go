@@ -28,7 +28,7 @@ import (
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 
-	xioutil "github.com/minio/minio/internal/ioutil"
+	xioutil "github.com/jackblack369/minio/internal/ioutil"
 )
 
 type warmBackendGCS struct {

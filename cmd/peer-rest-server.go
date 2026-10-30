@@ -32,10 +32,10 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/gorilla/mux"
+	b "github.com/jackblack369/minio/internal/bucket/bandwidth"
+	"github.com/jackblack369/minio/internal/event"
+	"github.com/jackblack369/minio/internal/logger"
 	"github.com/minio/madmin-go"
-	b "github.com/minio/minio/internal/bucket/bandwidth"
-	"github.com/minio/minio/internal/event"
-	"github.com/minio/minio/internal/logger"
 	"github.com/tinylib/msgp/msgp"
 )
 

@@ -34,8 +34,8 @@ import (
 	"time"
 
 	elasticsearch7 "github.com/elastic/go-elasticsearch/v7"
+	"github.com/jackblack369/minio/internal/event"
 	"github.com/minio/highwayhash"
-	"github.com/minio/minio/internal/event"
 	xnet "github.com/minio/pkg/net"
 	"github.com/pkg/errors"
 )
