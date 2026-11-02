@@ -49,6 +49,7 @@ const (
 	EnvFSOSync            = "MINIO_FS_OSYNC"
 	EnvFSDirectIO         = "MINIO_FS_DIRECTIO"
 	EnvFSReverseWriteSize = "MINIO_FS_REVERSE_WRITE_SIZE"
+	EnvFSParallelMeta     = "MINIO_FS_PARALLEL_META"
 	EnvArgs               = "MINIO_ARGS"
 	EnvDNSWebhook         = "MINIO_DNS_WEBHOOK_ENDPOINT"
 

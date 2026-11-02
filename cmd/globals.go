@@ -313,6 +313,8 @@ var (
 	globalFSDirectIO bool
 	// Reverse writes are an opt-in experiment for backends that flush slices in parallel.
 	globalFSReverseWriteSize int
+	// Prepare the metadata lock while writing the private data temporary file.
+	globalFSParallelMeta bool
 
 	globalProxyEndpoints []ProxyEndpoint
 
