@@ -1086,10 +1086,14 @@ func (fs *FSObjects) putObject(ctx context.Context, bucket string, object string
 	fsTmpObjPath := pathJoin(fs.fsPath, minioMetaTmpBucket, fs.fsUUID, tempObj)
 	bytesWritten, err := fsCreateFile(ctx, fsTmpObjPath, data, data.Size())
 
-	// Delete the temporary object in the case of a
-	// failure. If PutObject succeeds, then there would be
-	// nothing to delete.
-	defer fsRemoveFile(ctx, fsTmpObjPath)
+	// Clean up failures before publication. After a successful rename the
+	// temporary path no longer exists, so avoid an unnecessary remove.
+	tempObjRenamed := false
+	defer func() {
+		if !tempObjRenamed {
+			fsRemoveFile(ctx, fsTmpObjPath)
+		}
+	}()
 
 	if err != nil {
 		return ObjectInfo{}, toObjectErr(err, bucket, object)
@@ -1107,6 +1111,7 @@ func (fs *FSObjects) putObject(ctx context.Context, bucket string, object string
 	if err = fsRenameFile(ctx, fsTmpObjPath, fsNSObjPath); err != nil {
 		return ObjectInfo{}, toObjectErr(err, bucket, object)
 	}
+	tempObjRenamed = true
 
 	if bucket != minioMetaBucket {
 		// Write FS metadata after a successful namespace operation.
