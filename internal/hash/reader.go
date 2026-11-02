@@ -36,8 +36,14 @@ import (
 // are not empty then it will check whether the computed
 // match the reference values.
 type Reader struct {
-	src       io.Reader
-	bytesRead int64
+	src         io.Reader
+	bytesRead   int64
+	readStarted bool
+
+	// deferredSrc is retained only when this reader owns the untransformed
+	// ETag calculation. Externally supplied Taggers must keep their own path.
+	deferredSrc io.Reader
+	deferred    *deferredChecksum
 
 	size       int64
 	actualSize int64
@@ -79,7 +85,7 @@ func NewReader(src io.Reader, size int64, md5Hex, sha256Hex string, actualSize i
 	// Merge the size, MD5 and SHA256 values if src is a Reader.
 	// The size may be set to -1 by callers if unknown.
 	if r, ok := src.(*Reader); ok {
-		if r.bytesRead > 0 {
+		if r.bytesRead > 0 || r.deferred != nil {
 			return nil, errors.New("hash: already read from hash reader")
 		}
 		if len(r.checksum) != 0 && len(MD5) != 0 && !etag.Equal(r.checksum, etag.ETag(MD5)) {
@@ -98,6 +104,11 @@ func NewReader(src io.Reader, size int64, md5Hex, sha256Hex string, actualSize i
 			return nil, ErrSizeMismatch{Want: r.size, Got: size}
 		}
 
+		// The wrapped ETag reader can retain an earlier reference checksum
+		// even when this merge replaces r.checksum. Keep merged readers on
+		// their original verification path rather than bypassing constraints
+		// held by the existing wrappers.
+		r.deferredSrc = nil
 		r.checksum = etag.ETag(MD5)
 		r.contentSHA256 = SHA256
 		if r.size < 0 && size >= 0 {
@@ -110,9 +121,11 @@ func NewReader(src io.Reader, size int64, md5Hex, sha256Hex string, actualSize i
 		return r, nil
 	}
 
+	var deferredSrc io.Reader
 	if size >= 0 {
 		r := io.LimitReader(src, size)
 		if _, ok := src.(etag.Tagger); !ok {
+			deferredSrc = r
 			src = etag.NewReader(r, etag.ETag(MD5))
 		} else {
 			src = etag.Wrap(r, src)
@@ -126,6 +139,7 @@ func NewReader(src io.Reader, size int64, md5Hex, sha256Hex string, actualSize i
 	}
 	return &Reader{
 		src:           src,
+		deferredSrc:   deferredSrc,
 		size:          size,
 		actualSize:    actualSize,
 		checksum:      etag.ETag(MD5),
@@ -135,6 +149,16 @@ func NewReader(src io.Reader, size int64, md5Hex, sha256Hex string, actualSize i
 }
 
 func (r *Reader) Read(p []byte) (int, error) {
+	r.readStarted = true
+	if r.deferred != nil {
+		if !r.deferred.done.Load() {
+			return 0, ErrDeferredChecksumPending
+		}
+		if r.deferred.err != nil {
+			return 0, r.deferred.err
+		}
+		return 0, io.EOF
+	}
 	n, err := r.src.Read(p)
 	r.bytesRead += int64(n)
 	if r.sha256 != nil {
@@ -175,6 +199,12 @@ func (r *Reader) ActualSize() int64 { return r.actualSize }
 // If the underlying io.Reader does not implement etag.Tagger
 // it returns nil.
 func (r *Reader) ETag() etag.ETag {
+	if r.deferred != nil {
+		if !r.deferred.done.Load() {
+			return nil
+		}
+		return r.deferred.tag
+	}
 	if t, ok := r.src.(etag.Tagger); ok {
 		return t.ETag()
 	}

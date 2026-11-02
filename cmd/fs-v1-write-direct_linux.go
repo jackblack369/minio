@@ -14,6 +14,7 @@ import (
 	"syscall"
 
 	"github.com/jackblack369/minio/internal/disk"
+	"github.com/jackblack369/minio/internal/hash"
 )
 
 const fsDirectIOAlignment = 4096
@@ -50,6 +51,29 @@ func fsCreateFileOptimized(filePath string, flags int, src io.Reader) (int64, er
 			_ = f.Close()
 		}
 	}()
+	if globalFSParallelChecksum {
+		if reader, ok := src.(*hash.Reader); ok && reader.Size() == fsWriteBufferSize {
+			written, checksumErr, handled := func() (int64, error, bool) {
+				block := fsDirectIOBufferPool.Get().(*fsDirectIOBuffer)
+				// Keep the buffer owned until both checksum and all file work
+				// have completed, including failure and panic unwinding.
+				defer fsDirectIOBufferPool.Put(block)
+				n, finalize, readErr := reader.ReadAllDeferred(block.data)
+				if errors.Is(readErr, hash.ErrDeferredChecksumUnsupported) {
+					return 0, nil, false
+				}
+				if readErr != nil {
+					return 0, readErr, true
+				}
+				owned = false
+				nw, writeErr := fsWriteFileParallelChecksum(f, block.data[:n], finalize, globalFSReverseWriteSize)
+				return nw, writeErr, true
+			}()
+			if handled {
+				return written, checksumErr
+			}
+		}
+	}
 	owned = false
 	if globalFSReverseWriteSize != 0 {
 		return fsWriteFileReverse(f, src, globalFSReverseWriteSize)

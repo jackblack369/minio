@@ -315,6 +315,8 @@ var (
 	globalFSReverseWriteSize int
 	// Prepare the metadata lock while writing the private data temporary file.
 	globalFSParallelMeta bool
+	// Verify a bounded immutable object buffer while writing its private file.
+	globalFSParallelChecksum bool
 
 	globalProxyEndpoints []ProxyEndpoint
 
