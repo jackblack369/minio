@@ -696,21 +696,32 @@ func jsonSave(f interface {
 	Truncate(int64) error
 }, data interface{},
 ) error {
+	_, err := jsonSaveCount(f, data)
+	return err
+}
+
+// jsonSaveCount replaces the file contents and returns the number of JSON bytes
+// actually written, avoiding a separate Stat just to recover that length.
+func jsonSaveCount(f interface {
+	io.WriteSeeker
+	Truncate(int64) error
+}, data interface{},
+) (int64, error) {
 	b, err := json.Marshal(data)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if err = f.Truncate(0); err != nil {
-		return err
+		return 0, err
 	}
 	if _, err = f.Seek(0, io.SeekStart); err != nil {
-		return err
+		return 0, err
 	}
-	_, err = f.Write(b)
-	if err != nil {
-		return err
+	n, err := f.Write(b)
+	if err == nil && n != len(b) {
+		err = io.ErrShortWrite
 	}
-	return nil
+	return int64(n), err
 }
 
 // ceilFrac takes a numerator and denominator representing a fraction
