@@ -311,6 +311,8 @@ var (
 	globalFSOSync bool
 	// Direct I/O is opt-in because filesystem support and performance vary.
 	globalFSDirectIO bool
+	// Reverse writes are an opt-in experiment for backends that flush slices in parallel.
+	globalFSReverseWriteSize int
 
 	globalProxyEndpoints []ProxyEndpoint
 
