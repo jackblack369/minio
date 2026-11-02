@@ -687,6 +687,10 @@ func handleCommonEnvVars() {
 		logger.Fatal(fmt.Errorf("must be 0 or a power of two from 4KiB through 4MiB"), "Invalid MINIO_FS_REVERSE_WRITE_SIZE value in environment variable")
 	}
 	globalFSReverseWriteSize = int(reverseWriteSize)
+	globalFSParallelMeta, err = config.ParseBool(env.Get(config.EnvFSParallelMeta, config.EnableOff))
+	if err != nil {
+		logger.Fatal(err, "Invalid MINIO_FS_PARALLEL_META value in environment variable")
+	}
 
 	if rootDiskSize := env.Get(config.EnvRootDiskThresholdSize, ""); rootDiskSize != "" {
 		size, err := humanize.ParseBytes(rootDiskSize)

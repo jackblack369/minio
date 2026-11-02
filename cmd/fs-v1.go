@@ -1049,33 +1049,40 @@ func (fs *FSObjects) putObject(ctx context.Context, bucket string, object string
 		return ObjectInfo{}, errInvalidArgument
 	}
 
-	var wlk *lock.LockedFile
+	var metadata fsMetadataPreparation
+	awaitMetadata := func() fsMetadataPreparation { return metadata }
 	if bucket != minioMetaBucket {
 		bucketMetaDir := pathJoin(fs.fsPath, minioMetaBucket, bucketMetaPrefix)
 		fsMetaPath := pathJoin(bucketMetaDir, bucket, object, fs.metaJSONFile)
-		wlk, err = fs.rwPool.Write(fsMetaPath)
-		var freshFile bool
-		if err != nil {
-			wlk, err = fs.rwPool.Create(fsMetaPath)
-			if err != nil {
-				logger.LogIf(ctx, err)
-				return ObjectInfo{}, toObjectErr(err, bucket, object)
-			}
-			freshFile = true
+		if globalFSParallelMeta {
+			awaitMetadata = fsStartMetadataPreparation(func() fsMetadataPreparation {
+				return fs.prepareObjectMetadata(fsMetaPath)
+			})
+		} else {
+			metadata = fs.prepareObjectMetadata(fsMetaPath)
 		}
-		// This close will allow for locks to be synchronized on `fs.json`.
-		defer wlk.Close()
 		defer func() {
+			// Join even on an early return or panic: a worker must not outlive
+			// the request and later acquire an unowned metadata file lock.
+			prepared := awaitMetadata()
+			if prepared.file == nil {
+				return
+			}
+			defer prepared.file.Close()
 			// Remove meta file when PutObject encounters
 			// any error and it is a fresh file.
 			//
 			// We should preserve the `fs.json` of any
 			// existing object
-			if retErr != nil && freshFile {
+			if retErr != nil && prepared.fresh {
 				tmpDir := pathJoin(fs.fsPath, minioMetaTmpBucket, fs.fsUUID)
 				fsRemoveMeta(ctx, bucketMetaDir, fsMetaPath, tmpDir)
 			}
 		}()
+		if !globalFSParallelMeta && metadata.err != nil {
+			logger.LogIf(ctx, metadata.err)
+			return ObjectInfo{}, toObjectErr(metadata.err, bucket, object)
+		}
 	}
 
 	// Uploaded object will first be written to the temporary location which will eventually
@@ -1084,7 +1091,6 @@ func (fs *FSObjects) putObject(ctx context.Context, bucket string, object string
 	tempObj := mustGetUUID()
 
 	fsTmpObjPath := pathJoin(fs.fsPath, minioMetaTmpBucket, fs.fsUUID, tempObj)
-	bytesWritten, err := fsCreateFile(ctx, fsTmpObjPath, data, data.Size())
 
 	// Clean up failures before publication. After a successful rename the
 	// temporary path no longer exists, so avoid an unnecessary remove.
@@ -1095,6 +1101,14 @@ func (fs *FSObjects) putObject(ctx context.Context, bucket string, object string
 		}
 	}()
 
+	bytesWritten, err := fsCreateFile(ctx, fsTmpObjPath, data, data.Size())
+	metadata = awaitMetadata()
+	// Metadata preparation preceded data consumption in the serial path.
+	// Preserve its error priority when both independent operations fail.
+	if metadata.err != nil {
+		logger.LogIf(ctx, metadata.err)
+		return ObjectInfo{}, toObjectErr(metadata.err, bucket, object)
+	}
 	if err != nil {
 		return ObjectInfo{}, toObjectErr(err, bucket, object)
 	}
@@ -1115,7 +1129,7 @@ func (fs *FSObjects) putObject(ctx context.Context, bucket string, object string
 
 	if bucket != minioMetaBucket {
 		// Write FS metadata after a successful namespace operation.
-		if _, err = fsMeta.WriteTo(wlk); err != nil {
+		if _, err = fsMeta.WriteTo(metadata.file); err != nil {
 			return ObjectInfo{}, toObjectErr(err, bucket, object)
 		}
 	}
