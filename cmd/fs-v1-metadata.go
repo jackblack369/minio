@@ -202,14 +202,7 @@ func (m fsMetaV1) ToObjectInfo(bucket, object string, fi os.FileInfo) ObjectInfo
 }
 
 func (m *fsMetaV1) WriteTo(lk *lock.LockedFile) (n int64, err error) {
-	if err = jsonSave(lk, m); err != nil {
-		return 0, err
-	}
-	fi, err := lk.Stat()
-	if err != nil {
-		return 0, err
-	}
-	return fi.Size(), nil
+	return jsonSaveCount(lk, m)
 }
 
 func (m *fsMetaV1) ReadFrom(ctx context.Context, lk *lock.LockedFile) (n int64, err error) {
