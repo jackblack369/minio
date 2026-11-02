@@ -47,6 +47,7 @@ const (
 	EnvDomain     = "MINIO_DOMAIN"
 	EnvPublicIPs  = "MINIO_PUBLIC_IPS"
 	EnvFSOSync    = "MINIO_FS_OSYNC"
+	EnvFSDirectIO = "MINIO_FS_DIRECTIO"
 	EnvArgs       = "MINIO_ARGS"
 	EnvDNSWebhook = "MINIO_DNS_WEBHOOK_ENDPOINT"
 
