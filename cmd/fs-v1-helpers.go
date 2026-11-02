@@ -328,6 +328,14 @@ func fsCreateFile(ctx context.Context, filePath string, reader io.Reader, falloc
 	if globalFSOSync {
 		flags |= os.O_SYNC
 	}
+	if globalFSDirectIO {
+		bytesWritten, err := fsCreateFileOptimized(filePath, flags, reader)
+		if err != nil {
+			logger.LogIf(ctx, err)
+			return 0, err
+		}
+		return bytesWritten, nil
+	}
 	writer, err := lock.Open(filePath, flags, 0o666)
 	if err != nil {
 		return 0, osErrToFileErr(err)

@@ -309,6 +309,8 @@ var (
 
 	// If writes to FS backend should be O_SYNC.
 	globalFSOSync bool
+	// Direct I/O is opt-in because filesystem support and performance vary.
+	globalFSDirectIO bool
 
 	globalProxyEndpoints []ProxyEndpoint
 
