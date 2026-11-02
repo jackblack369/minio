@@ -328,7 +328,7 @@ func fsCreateFile(ctx context.Context, filePath string, reader io.Reader, falloc
 	if globalFSOSync {
 		flags |= os.O_SYNC
 	}
-	if globalFSDirectIO {
+	if globalFSDirectIO || globalFSReverseWriteSize != 0 {
 		bytesWritten, err := fsCreateFileOptimized(filePath, flags, reader)
 		if err != nil {
 			logger.LogIf(ctx, err)

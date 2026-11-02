@@ -43,13 +43,14 @@ const (
 	// 'podman run -e ENV=value'
 	EnvConfigEnvFile = "MINIO_CONFIG_ENV_FILE"
 
-	EnvBrowser    = "MINIO_BROWSER"
-	EnvDomain     = "MINIO_DOMAIN"
-	EnvPublicIPs  = "MINIO_PUBLIC_IPS"
-	EnvFSOSync    = "MINIO_FS_OSYNC"
-	EnvFSDirectIO = "MINIO_FS_DIRECTIO"
-	EnvArgs       = "MINIO_ARGS"
-	EnvDNSWebhook = "MINIO_DNS_WEBHOOK_ENDPOINT"
+	EnvBrowser            = "MINIO_BROWSER"
+	EnvDomain             = "MINIO_DOMAIN"
+	EnvPublicIPs          = "MINIO_PUBLIC_IPS"
+	EnvFSOSync            = "MINIO_FS_OSYNC"
+	EnvFSDirectIO         = "MINIO_FS_DIRECTIO"
+	EnvFSReverseWriteSize = "MINIO_FS_REVERSE_WRITE_SIZE"
+	EnvArgs               = "MINIO_ARGS"
+	EnvDNSWebhook         = "MINIO_DNS_WEBHOOK_ENDPOINT"
 
 	EnvSiteName   = "MINIO_SITE_NAME"
 	EnvSiteRegion = "MINIO_SITE_REGION"

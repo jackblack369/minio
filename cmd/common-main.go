@@ -679,6 +679,14 @@ func handleCommonEnvVars() {
 	if err != nil {
 		logger.Fatal(err, "Invalid MINIO_FS_DIRECTIO value in environment variable")
 	}
+	reverseWriteSize, err := humanize.ParseBytes(env.Get(config.EnvFSReverseWriteSize, "0"))
+	if err != nil {
+		logger.Fatal(err, "Invalid MINIO_FS_REVERSE_WRITE_SIZE value in environment variable")
+	}
+	if reverseWriteSize != 0 && (reverseWriteSize < 4096 || reverseWriteSize > fsWriteBufferSize || reverseWriteSize&(reverseWriteSize-1) != 0) {
+		logger.Fatal(fmt.Errorf("must be 0 or a power of two from 4KiB through 4MiB"), "Invalid MINIO_FS_REVERSE_WRITE_SIZE value in environment variable")
+	}
+	globalFSReverseWriteSize = int(reverseWriteSize)
 
 	if rootDiskSize := env.Get(config.EnvRootDiskThresholdSize, ""); rootDiskSize != "" {
 		size, err := humanize.ParseBytes(rootDiskSize)

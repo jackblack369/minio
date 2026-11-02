@@ -51,6 +51,9 @@ func fsCreateFileOptimized(filePath string, flags int, src io.Reader) (int64, er
 		}
 	}()
 	owned = false
+	if globalFSReverseWriteSize != 0 {
+		return fsWriteFileReverse(f, src, globalFSReverseWriteSize)
+	}
 	return fsWriteFileDirectIO(f, src)
 }
 
