@@ -674,7 +674,6 @@ func handleCommonEnvVars() {
 	if err != nil {
 		logger.Fatal(config.ErrInvalidFSOSyncValue(err), "Invalid MINIO_FS_OSYNC value in environment variable")
 	}
-
 	globalFSDirectIO, err = config.ParseBool(env.Get(config.EnvFSDirectIO, config.EnableOff))
 	if err != nil {
 		logger.Fatal(err, "Invalid MINIO_FS_DIRECTIO value in environment variable")
@@ -690,6 +689,10 @@ func handleCommonEnvVars() {
 	globalFSParallelMeta, err = config.ParseBool(env.Get(config.EnvFSParallelMeta, config.EnableOff))
 	if err != nil {
 		logger.Fatal(err, "Invalid MINIO_FS_PARALLEL_META value in environment variable")
+	}
+	globalFSParallelChecksum, err = config.ParseBool(env.Get(config.EnvFSParallelChecksum, config.EnableOff))
+	if err != nil {
+		logger.Fatal(err, "Invalid MINIO_FS_PARALLEL_CHECKSUM value in environment variable")
 	}
 
 	if rootDiskSize := env.Get(config.EnvRootDiskThresholdSize, ""); rootDiskSize != "" {
