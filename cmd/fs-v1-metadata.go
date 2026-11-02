@@ -113,6 +113,8 @@ func (c *FSChecksumInfoV1) UnmarshalJSON(data []byte) error {
 // A fsMetaV1 represents a metadata header mapping keys to sets of values.
 type fsMetaV1 struct {
 	Version string `json:"version"`
+	// HashKey binds a hashed container to its original logical S3 key.
+	HashKey string `json:"hashKey,omitempty"`
 	// checksums of blocks on disk.
 	Checksum FSChecksumInfoV1 `json:"checksum,omitempty"`
 	// Metadata map for current object.
@@ -144,7 +146,7 @@ func (m fsMetaV1) ToObjectInfo(bucket, object string, fi os.FileInfo) ObjectInfo
 		m.Meta["content-type"] = mimedb.TypeByExtension(pathutil.Ext(object))
 	}
 
-	if HasSuffix(object, SlashSeparator) {
+	if m.HashKey == "" && HasSuffix(object, SlashSeparator) {
 		m.Meta["etag"] = emptyETag // For directories etag is d41d8cd98f00b204e9800998ecf8427e
 		m.Meta["content-type"] = "application/octet-stream"
 	}

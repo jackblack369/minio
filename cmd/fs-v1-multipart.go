@@ -20,7 +20,6 @@ package cmd
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -41,14 +40,21 @@ const (
 	bgAppendsCleanupInterval = 10 * time.Minute
 )
 
+func (fs *FSObjects) multipartObjectHash(bucket, object string) string {
+	if fs.isHashBucket(bucket) {
+		return getSHA256Hash([]byte(bucket + "\x00" + object))
+	}
+	return getSHA256Hash([]byte(pathJoin(bucket, object)))
+}
+
 // Returns EXPORT/.minio.sys/multipart/SHA256/UPLOADID
 func (fs *FSObjects) getUploadIDDir(bucket, object, uploadID string) string {
-	return pathJoin(fs.fsPath, minioMetaMultipartBucket, getSHA256Hash([]byte(pathJoin(bucket, object))), uploadID)
+	return pathJoin(fs.fsPath, minioMetaMultipartBucket, fs.multipartObjectHash(bucket, object), uploadID)
 }
 
 // Returns EXPORT/.minio.sys/multipart/SHA256
 func (fs *FSObjects) getMultipartSHADir(bucket, object string) string {
-	return pathJoin(fs.fsPath, minioMetaMultipartBucket, getSHA256Hash([]byte(pathJoin(bucket, object))))
+	return pathJoin(fs.fsPath, minioMetaMultipartBucket, fs.multipartObjectHash(bucket, object))
 }
 
 // Returns partNumber.etag
@@ -548,6 +554,7 @@ func (fs *FSObjects) ListObjectParts(ctx context.Context, bucket, object, upload
 //
 // Implements S3 compatible Complete multipart API.
 func (fs *FSObjects) CompleteMultipartUpload(ctx context.Context, bucket string, object string, uploadID string, parts []CompletePart, opts ObjectOptions) (oi ObjectInfo, e error) {
+	defer fs.hashBucketReadLock(bucket)()
 	var actualSize int64
 
 	if err := checkCompleteMultipartArgs(ctx, bucket, object, fs); err != nil {
@@ -713,21 +720,14 @@ func (fs *FSObjects) CompleteMultipartUpload(ctx context.Context, bucket string,
 	ctx = lkctx.Context()
 	defer destLock.Unlock(lkctx.Cancel)
 
-	bucketMetaDir := pathJoin(fs.fsPath, minioMetaBucket, bucketMetaPrefix)
-	fsMetaPath := pathJoin(bucketMetaDir, bucket, object, fs.metaJSONFile)
-	metaFile, err := fs.rwPool.Write(fsMetaPath)
-	var freshFile bool
-	if err != nil {
-		if !errors.Is(err, errFileNotFound) {
-			logger.LogIf(ctx, err)
-			return oi, toObjectErr(err, bucket, object)
+	fsMetaPath := fs.objectMetaPath(bucket, object)
+	prepared := fs.prepareMultipartMetadata(bucket, object, fsMetaPath)
+	metaFile, freshFile := prepared.file, prepared.fresh
+	if prepared.err != nil {
+		if metaFile != nil {
+			metaFile.Close()
 		}
-		metaFile, err = fs.rwPool.Create(fsMetaPath)
-		if err != nil {
-			logger.LogIf(ctx, err)
-			return oi, toObjectErr(err, bucket, object)
-		}
-		freshFile = true
+		return oi, toObjectErr(prepared.err, bucket, object)
 	}
 	defer metaFile.Close()
 	defer func() {
@@ -738,7 +738,7 @@ func (fs *FSObjects) CompleteMultipartUpload(ctx context.Context, bucket string,
 		// existing object
 		if e != nil && freshFile {
 			tmpDir := pathJoin(fs.fsPath, minioMetaTmpBucket, fs.fsUUID)
-			fsRemoveMeta(ctx, bucketMetaDir, fsMetaPath, tmpDir)
+			fsRemoveMeta(ctx, fs.metadataDeleteRoot(bucket, object), fsMetaPath, tmpDir)
 		}
 	}()
 
@@ -752,6 +752,9 @@ func (fs *FSObjects) CompleteMultipartUpload(ctx context.Context, bucket string,
 	if err != nil {
 		logger.LogIf(ctx, err)
 		return oi, toObjectErr(err, bucket, object)
+	}
+	if fs.isHashBucket(bucket) {
+		fsMeta.HashKey = object
 	}
 	// Save additional metadata.
 	if fsMeta.Meta == nil {
@@ -770,7 +773,14 @@ func (fs *FSObjects) CompleteMultipartUpload(ctx context.Context, bucket string,
 		return oi, toObjectErr(err, bucket, object)
 	}
 
-	err = fsRenameFile(ctx, appendFilePath, pathJoin(fs.fsPath, bucket, object))
+	if fs.isHashBucket(bucket) {
+		appendFilePath, err = fs.hashMultipartLocalFile(ctx, bucket, object, appendFilePath)
+		if err != nil {
+			return oi, toObjectErr(err, bucket, object)
+		}
+		defer fsRemoveFile(ctx, appendFilePath)
+	}
+	err = fsRenameFile(ctx, appendFilePath, fs.objectPath(bucket, object))
 	if err != nil {
 		logger.LogIf(ctx, err)
 		return oi, toObjectErr(err, bucket, object)
@@ -787,7 +797,7 @@ func (fs *FSObjects) CompleteMultipartUpload(ctx context.Context, bucket string,
 		fsRemoveDir(ctx, fs.getMultipartSHADir(bucket, object))
 	}
 
-	fi, err := fsStatFile(ctx, pathJoin(fs.fsPath, bucket, object))
+	fi, err := fsStatFile(ctx, fs.objectPath(bucket, object))
 	if err != nil {
 		return oi, toObjectErr(err, bucket, object)
 	}
